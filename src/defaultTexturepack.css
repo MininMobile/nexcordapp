@@ -5,23 +5,34 @@ html, body {
 	margin: 0;
 	color: #ddd;
 	font-size: 1em;
+	font-family: Arimo;
+}
+
+@font-face {
+	font-family: Arimo;
+	src: url(./font/Arimo-Regular.woff);
+}
+
+@font-face {
+	font-family: FiraMono;
+	src: url(./font/FiraMono-Regular.otf);
 }
 
 /* forms */
 
 label {
 	display: block;
-	font-size: 0.8em;
+	font-size: 0.7em;
 }
 
 input[type=text], input[type=email], input[type=password] {
 	transition: border-color 0.15s;
 	color: #ddd;
-	font-size: 1.2em;
-	margin: 0.2em 0em 1em 0em;
+	margin: 0.3em 0em 1em 0em;
+	padding: 0.6em;
 	display: block;
 	background: #303338;
-	border: 1px solid #111;
+	border: 1px solid rgba(0,0,0,.3);
 	border-radius: 3px;
 	outline: none;
 
@@ -29,6 +40,11 @@ input[type=text], input[type=email], input[type=password] {
 
 input[type=text]:hover, input[type=email]:hover, input[type=password]:hover {
 	border-color: #040405;
+}
+
+input[type=text]:active, input[type=email]:active, input[type=password]:active,
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
+	border-color: #7289da;
 }
 
 /* panels */
@@ -71,3 +87,5 @@ input[type=text]:hover, input[type=email]:hover, input[type=password]:hover {
 .fcf1:nth-child(1) { flex: 1; }
 
 .small { font-size: 0.6em; }
+.wide { letter-spacing: 0.1em }
+.semiwide { letter-spacing: 0.05em }
