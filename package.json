@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/MininMobile/nexcordapp/issues"
   },
-  "homepage": "https://github.com/MininMobile/nexcordapp#readme"
+  "homepage": "https://github.com/MininMobile/nexcordapp#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "electron": "^2.0.6"
+  }
 }
