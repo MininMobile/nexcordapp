@@ -8,6 +8,11 @@ html, body {
 	font-family: Arimo;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+	font-weight: normal;
+}
+
 @font-face {
 	font-family: Arimo;
 	src: url(./font/Arimo-Regular.woff);
@@ -18,41 +23,12 @@ html, body {
 	src: url(./font/FiraMono-Regular.otf);
 }
 
-/* forms */
-
-label {
-	display: block;
-	font-size: 0.7em;
-}
-
-input[type=text], input[type=email], input[type=password] {
-	transition: border-color 0.15s;
-	color: #ddd;
-	margin: 0.3em 0em 1em 0em;
-	padding: 0.6em;
-	display: block;
-	background: #303338;
-	border: 1px solid rgba(0,0,0,.3);
-	border-radius: 3px;
-	outline: none;
-
-}
-
-input[type=text]:hover, input[type=email]:hover, input[type=password]:hover {
-	border-color: #040405;
-}
-
-input[type=text]:active, input[type=email]:active, input[type=password]:active,
-input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
-	border-color: #7289da;
-}
-
 /* panels */
 
 .panel {
 	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px 0px;
 	padding: 1.6em;
-	border-radius: 0.4em;
+	border-radius: 0.3em;
 	background: #36393f;
 }
 
@@ -78,7 +54,12 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
 
 /* properties, basically, things to apply because I dont want to make this file really long but these will probably be the reason the file is really long sorry dad */
 
+.o50 { opacity: 0.5; }
+.w100 { width: 100%; }
 .p2 { padding: 2em; }
+.lp2 { padding-left: 2em; }
+.rp2 { padding-right: 2em; }
+.bp03 { padding-bottom: 0.3em; }
 
 .f { display: flex; }
 .vf { flex-direction: column; }
@@ -89,3 +70,56 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
 .small { font-size: 0.6em; }
 .wide { letter-spacing: 0.1em }
 .semiwide { letter-spacing: 0.05em }
+.tcenter { text-align: center; }
+
+/* forms */
+
+label {
+	margin-top: 1em;
+	display: block;
+	font-size: 0.7em;
+}
+
+input[type=text], input[type=email], input[type=password] {
+	width: 93%;
+	transition: border-color 0.15s;
+	color: #ddd;
+	margin: 0.3em 0 0 0;
+	padding: 0.6em;
+	display: block;
+	background: #303338;
+	border: 1px solid rgba(0,0,0,.3);
+	border-radius: 3px;
+	outline: none;
+}
+
+input[type=text]:hover, input[type=email]:hover, input[type=password]:hover {
+	border-color: #040405;
+}
+
+input[type=text]:active, input[type=email]:active, input[type=password]:active,
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
+	border-color: #7289da;
+}
+
+button, input[type=submit] {
+	width: 100%;
+	transition: background 0.15s;
+	color: #ddd;
+	background: #7289DA;
+	margin: 1.3em 0 0.3em 0;
+	padding: 0.6em;
+	display: block;
+	border: none;
+	border-radius: 3px;
+	outline: none;
+}
+
+button:hover, input[type=submit]:hover {
+	background: #677CC5;
+}
+
+button:active, input[type=submit]:active,
+button:focus, input[type=submit]:focus {
+	background: #5b6eae;
+}
