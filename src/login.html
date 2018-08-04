@@ -5,9 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" media="screen" href="defaultTexturepack.css" />
-	<script defer>
-		// owo
-	</script>
+	<script defer src="login.js"></script>
 
 	<title>Nexcord</title>
 </head>
@@ -19,9 +17,8 @@
 					<h3 class="tcenter lp2 rp2">Welcome back!</h3>
 					<h5 class="tcenter o50 lp2 bp03 rp2">We're so excited to see you again</h5>
 
-					<form action="#">
-						<label for="username">EMAIL</label><input id="username" type="email"/>
-						<label for="password">PASSWORD</label><input id="password" type="password"/>
+					<form id="loginform" onsubmit="return false">
+						<label for="token">TOKEN</label><input id="token" type="password" required/>
 						<input type="submit" value="Login"/>
 					</form>
 				</div>
