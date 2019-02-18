@@ -279,7 +279,10 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .room-menu {
 	height: 2.4em;
+	padding-left: 0.8em;
 	background: #161616;
+	display: flex;
+	align-items: center;
 }
 
 .room-list-container > .room-list {
