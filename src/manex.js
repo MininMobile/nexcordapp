@@ -14,7 +14,8 @@ let memberList = document.getElementById("member-list");
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
 // get other shit
-let roomMenu = document.getElementById("room-menu");
+let roomTitle = document.getElementById("room-title");
+let roomClose = document.getElementById("room-close");
 
 // temp data store
 let rooms = undefined;
@@ -132,36 +133,49 @@ let alt = false;
 						author.appendChild(timestamp);
 				}
 
-				switch (m.event.type) {
-					case "m.room.message": {
-						content.innerHTML = m.event.content.body;
-					} break;
+				{ // message content
+					let text;
 
-					case "m.room.member": {
-						message.classList.add("no-author");
+					switch (m.event.type) {
+						case "m.room.message": {
+							text = m.event.content.body;
+						} break;
 
-						switch (m.event.content.membership) {
-							case "join": {
-								content.innerHTML = `${m.sender.name} has joined the group.`;
-							} break;
+						case "m.room.member": {
+							message.classList.add("no-author");
 
-							case "leave": {
-								if (m.target) {
-									content.innerHTML = `${m.sender.name} has kicked ${m.target.name}.`;
+							switch (m.event.content.membership) {
+								case "join": {
+									text = `${m.sender.name} has joined the group.`;
+								} break;
 
-									if (m.event.content.reason)
-										content.innerHTML += ` Reason: ${m.event.content.reason}`;
-								} else {
-									content.innerHTML = `${m.sender.name} has left the group.`;
-								}
-							} break;
-						}
-					} break;
+								case "leave": {
+									if (m.target) {
+										text = `${m.sender.name} has kicked ${m.target.name}.`;
+
+										if (m.event.content.reason)
+											text += ` Reason: ${m.event.content.reason}`;
+									} else {
+										text = `${m.sender.name} has left the group.`;
+									}
+								} break;
+							}
+						} break;
+
+						case "m.room.topic": {
+							message.classList.add("no-author");
+
+							text = `${m.sender.name} set the topic to "${m.event.content.topic}".`;
+						} break;
+					}
+
+					content.innerHTML = escapeHtml(text);
 				}
 			});
 		}
 
-		roomMenu.innerText = room.name;
+		roomClose.classList.remove("disabled");
+		roomTitle.innerText = room.name;
 
 		// scroll to bottom
 		messageList.scrollTop = messageList.scrollHeight;
@@ -173,7 +187,9 @@ let alt = false;
 		messageList.innerHTML = "";
 		memberList.innerHTML = "";
 
-		roomMenu.innerText = "Manex";
+		roomTitle.innerText = "Manex";
+
+		roomClose.classList.add("disabled");
 	}
 
 	function logout() {
@@ -221,6 +237,8 @@ let alt = false;
 		}
 	});
 
+	roomClose.addEventListener("click", closeRoom);
+
 	messageBoxForm.addEventListener("submit", () => {
 		if (!currentRoom) return;
 		if (!currentRoom.roomId) return;
@@ -240,6 +258,15 @@ let alt = false;
 }
 
 { // util
+	function escapeHtml(unsafe) {
+		return unsafe
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	 }
+
 	function showLoading() {
 		return new Promise((resolve, reject) => {
 			if (!loadingSplash.classList.contains("hidden")) {

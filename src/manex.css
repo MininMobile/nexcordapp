@@ -279,16 +279,9 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .room-menu {
 	height: 2.4em;
-	padding-left: 0.8em;
 	background: #161616;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
-	transition: filter 0.2s;
-}
-
-.room-list-container > .room-menu:hover {
-	filter: brightness(75%);
 }
 
 .room-list-container > .room-list {
@@ -326,6 +319,7 @@ input[type="button"], input[type="submit"] {
 .message-list-container > .message-list {
 	padding: 1em;
 	flex: 1;
+	font-size: 0.9em;
 	overflow-y: auto;
 	-webkit-user-select: initial;
 }
@@ -339,6 +333,36 @@ input[type="button"], input[type="submit"] {
 	width: 240px;
 	background: #161616;
 	overflow: auto;
+}
+
+/* room menu */
+
+.room-list-container > .room-menu > .back {
+	width: 1.4em;
+	height: 1.4em;
+	margin: 0 0.5em;
+	background: url("img/button/back.svg") center / contain;
+	cursor: pointer;
+}
+
+.room-list-container > .room-menu > .room-title {
+	height: 2.4em;
+	padding-left: 0.5em;
+	display: flex;
+	align-items: center;
+	flex: 1;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.room-list-container > .room-menu > .room-title:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.room-list-container > .room-menu > .back.disabled + .room-title {
+	padding-left: 0.8em;
+	background: transparent !important;
+	cursor: default;
 }
 
 /* room list */
