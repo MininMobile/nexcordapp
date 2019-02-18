@@ -150,6 +150,7 @@ input[type="button"], input[type="submit"] {
 
 .titlebar > .actions {
 	margin-right: 0.4em;
+	display: flex;
 }
 
 .titlebar > .actions > * {
@@ -283,6 +284,7 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .room-list {
 	flex: 1;
+	overflow: auto;
 }
 
 .room-list-container > .main-menu {
@@ -313,6 +315,7 @@ input[type="button"], input[type="submit"] {
 
 .message-list-container > .message-list {
 	flex: 1;
+	overflow: auto;
 }
 
 .message-list-container > .messagebox {
@@ -323,4 +326,5 @@ input[type="button"], input[type="submit"] {
 .content-divider > .member-list {
 	width: 240px;
 	background: #161616;
+	overflow: auto;
 }
