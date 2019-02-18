@@ -283,6 +283,12 @@ input[type="button"], input[type="submit"] {
 	background: #161616;
 	display: flex;
 	align-items: center;
+	cursor: pointer;
+	transition: filter 0.2s;
+}
+
+.room-list-container > .room-menu:hover {
+	filter: brightness(75%);
 }
 
 .room-list-container > .room-list {
