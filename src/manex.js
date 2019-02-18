@@ -72,7 +72,7 @@ function getRooms() {
 		button.addEventListener("click", () => {
 			openRoom(r);
 		});
-		
+
 		roomList.appendChild(button);
 	});
 }
@@ -101,19 +101,38 @@ function openRoom(room) {
 
 		room.timeline.forEach((m) => {
 			let message = document.createElement("div");
-			message.classList.add("message");
+				message.classList.add("message");
+				messageList.appendChild(message);
+
+			let author = document.createElement("div");
+			author.classList.add("author");
+				message.appendChild(author);
+			
+			let content = document.createElement("div");
+				content.classList.add("content");
+				message.appendChild(content);
+
+			{ // author info
+				let title = document.createElement("div");
+					title.classList.add("title");
+					title.innerText = m.sender.name;
+					author.appendChild(title);
+
+				let timestamp = document.createElement("div");
+					timestamp.classList.add("timestamp");
+					timestamp.innerText = m.getDate();
+					author.appendChild(timestamp);
+			}
 
 			switch (m.event.type) {
 				case "m.room.message": {
-					message.innerText = `${m.sender.name}: ${m.event.content.body}`;
+					content.innerHTML = m.event.content.body;
 				} break;
 
-				case "m.room.member": {
-					message.innerText = `${m.sender.name}: ${m.event.content.membership}`;
-				} break;
+				//case "m.room.member": {
+				//	message.content = m.event.content.membership;
+				//} break;
 			}
-
-			messageList.appendChild(message);
 		});
 	}
 }

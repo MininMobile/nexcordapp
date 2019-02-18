@@ -357,9 +357,30 @@ input[type="button"], input[type="submit"] {
 /* message list */
 
 .message-list > .message > .author {
-
+	margin: 0 0.5em;
+	display: flex;
+	align-items: center;
 }
 
-.message-list > .message > .text {
+.message-list > .message > .author > .title {
+	color: rgba(255, 255, 255, 0.65);
+	margin-right: 0.5em;
+}
 
+.message-list > .message > .author > .timestamp {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 0.7em;
+}
+
+.message-list > .message > .content {
+	margin: 0 0.5em;
+}
+
+.message-list > .message + .message::before {
+	content: "";
+	width: 100%;
+	height: 1px;
+	margin: 0.3em 0;
+	display: block;
+	background: rgba(255, 255, 255, 0.1);
 }
