@@ -5,18 +5,20 @@ const path = require("path"),
 let win;
 
 function createWindow() {
-	win = new BrowserWindow();
+	win = new BrowserWindow({
+		minWidth: 800,
+		minHeight: 600,
+		resizable: true,
+		title: "Manex",
+		backgroundColor: "#212121",
+		frame: false
+	});
 
 	win.loadURL(url.format({
 		pathname: path.join(__dirname, 'src/index.html'),
 		protocol: "file:",
 		slashes: true
 	}));
-
-	win.setBackgroundColor("#212121");
-
-	win.setMinimumSize(800, 600);
-	win.setResizable(true);
 
 	win.focus();
 

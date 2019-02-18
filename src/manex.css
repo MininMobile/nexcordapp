@@ -23,3 +23,68 @@ h1, h2, h3, h4, h5, h6, p {
 	font-family: FiraMono;
 	src: url(./font/FiraMono-Regular.otf);
 }
+
+/* layout */
+
+.wrapper {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+}
+
+.wrapper > .room-list-container {
+	width: 240px;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5);
+}
+
+.room-list-container > .room-menu {
+	height: 2.4em;
+	background: #161616;
+}
+
+.room-list-container > .room-list {
+	flex: 1;
+}
+
+.room-list-container > .main-menu {
+	height: 2.4em;
+	background: #161616;
+}
+
+.wrapper > .content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.content > .titlebar {
+	height: 2.4em;
+	background: #161616;
+}
+
+.content > .content-divider {
+	display: flex;
+	flex: 1;
+}
+
+.content-divider > .message-list-container {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.message-list-container > .message-list {
+	flex: 1;
+}
+
+.message-list-container > .messagebox {
+	height: 2.4em;
+	background: #161616;
+}
+
+.content-divider > .member-list {
+	width: 240px;
+	background: #161616;
+}
