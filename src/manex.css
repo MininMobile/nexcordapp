@@ -365,6 +365,10 @@ input[type="button"], input[type="submit"] {
 
 /* message list */
 
+.message.no-author > .author {
+	display: none !important;
+}
+
 .message-list > .message > .author {
 	margin: 0 0.5em;
 	display: flex;

@@ -137,9 +137,26 @@ let alt = false;
 						content.innerHTML = m.event.content.body;
 					} break;
 
-					//case "m.room.member": {
-					//	message.content = m.event.content.membership;
-					//} break;
+					case "m.room.member": {
+						message.classList.add("no-author");
+
+						switch (m.event.content.membership) {
+							case "join": {
+								content.innerHTML = `${m.sender.name} has joined the group.`;
+							} break;
+
+							case "leave": {
+								if (m.target) {
+									content.innerHTML = `${m.sender.name} has kicked ${m.target.name}.`;
+
+									if (m.event.content.reason)
+										content.innerHTML += ` Reason: ${m.event.content.reason}`;
+								} else {
+									content.innerHTML = `${m.sender.name} has left the group.`;
+								}
+							} break;
+						}
+					} break;
 				}
 			});
 		}
