@@ -66,12 +66,14 @@ function getRooms() {
 
 	rooms.forEach((r) => {
 		let button = document.createElement("div");
-			button.classList.add("room");
-			button.innerText = r.name;
-			button.addEventListener("click", () => {
-				openRoom(r);
-			});
-			roomList.appendChild(button);
+		button.classList.add("room");
+		button.innerText = r.name;
+
+		button.addEventListener("click", () => {
+			openRoom(r);
+		});
+		
+		roomList.appendChild(button);
 	});
 }
 
@@ -83,17 +85,36 @@ function openRoom(room) {
 
 		room.getJoinedMembers().forEach((m) => {
 			let button = document.createElement("div");
-				button.classList.add("room");
-				button.innerText = m.name;
-				button.addEventListener("click", () => {
-					// smth
-				});
-				memberList.appendChild(button);
+			button.classList.add("member");
+			button.innerText = m.name;
+
+			button.addEventListener("click", () => {
+				// smth
+			});
+
+			memberList.appendChild(button);
 		});
 	}
 
 	{ // get timeline
-		// smth
+		messageList.innerHTML = "";
+
+		room.timeline.forEach((m) => {
+			let message = document.createElement("div");
+			message.classList.add("message");
+
+			switch (m.event.type) {
+				case "m.room.message": {
+					message.innerText = `${m.sender.name}: ${m.event.content.body}`;
+				} break;
+
+				case "m.room.member": {
+					message.innerText = `${m.sender.name}: ${m.event.content.membership}`;
+				} break;
+			}
+
+			messageList.appendChild(message);
+		});
 	}
 }
 

@@ -285,6 +285,7 @@ input[type="button"], input[type="submit"] {
 .room-list-container > .room-list {
 	flex: 1;
 	overflow: auto;
+	overflow-y: auto;
 }
 
 .room-list-container > .main-menu {
@@ -314,8 +315,10 @@ input[type="button"], input[type="submit"] {
 }
 
 .message-list-container > .message-list {
+	padding: 1em;
 	flex: 1;
-	overflow: auto;
+	overflow-y: auto;
+	-webkit-user-select: initial;
 }
 
 .message-list-container > .messagebox {
@@ -327,4 +330,36 @@ input[type="button"], input[type="submit"] {
 	width: 240px;
 	background: #161616;
 	overflow: auto;
+}
+
+/* room list */
+
+.room-list > .room {
+	background: rgba(0, 0, 0, 0.2);
+	padding: 0.25em 0.5em;
+	margin: 0.5em 1em;
+	font-size: 0.9em;
+	cursor: pointer;
+	border-radius: 0.2em;
+}
+
+/* member list */
+
+.member-list > .member {
+	background: rgba(0, 0, 0, 0.1);
+	padding: 0.25em 0.5em;
+	margin: 0.5em 1em;
+	font-size: 0.9em;
+	cursor: pointer;
+	border-radius: 0.2em;
+}
+
+/* message list */
+
+.message-list > .message > .author {
+
+}
+
+.message-list > .message > .text {
+
 }
