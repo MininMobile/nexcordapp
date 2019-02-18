@@ -4,15 +4,121 @@ html, body {
 	padding: 0;
 	margin: 0;
 	background: #212121;
-	color: #ddd;
+	color: #ccc;
 	font-size: 1em;
 	font-family: Arimo;
+	-webkit-user-select: none;
 }
 
 h1, h2, h3, h4, h5, h6, p {
 	margin: 0;
 	font-weight: normal;
 }
+
+input {
+	margin: 0.5em 0;
+	border: none !important;
+	outline: none !important;
+	-webkit-appearance: none;
+}
+
+input[type="text"], input[type="password"] {
+	height: 1.4em;
+	padding: 0.25em 0.75em;
+	background-color: transparent;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+input[type="text"] + div, input[type="password"] + div {
+	content: "";
+	width: 0;
+	height: 2px;
+	background: white;
+	display: block;
+	position: relative;
+	left: 100%;
+	bottom: 0.5em;
+	transition: width 0.2s, left 0.2s;
+}
+
+input[type="text"]:focus + div, input[type="password"]:focus + div {
+	width: 100%;
+	left: 0;
+	animation: slide-in 0.2s;
+}
+
+input[type="button"], input[type="submit"] {
+	height: 2.1em;
+	padding: 0.25em 0.75em;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: rgba(255, 255, 255, 0.75);
+	cursor: pointer;
+	border-radius: 1.05em;
+}
+
+/* select { */
+/* 	height: 2.1em; */
+/* 	padding: 0.25em 0.75em; */
+/* 	padding-right: 1.75em; */
+/* 	background-color: rgba(0, 0, 0, 0.5); */
+/* 	background-image: url("./img/down.svg"); */
+/* 	background-size: 1em; */
+/* 	background-position: calc(100% - 0.75em); */
+/* 	background-repeat: no-repeat; */
+/* 	color: rgba(255, 255, 255, 0.75); */
+/* 	cursor: pointer; */
+/* 	border: none !important; */
+/* 	outline: none !important; */
+/* 	border-radius: 1.05em; */
+/* 	-webkit-appearance: none; */
+/* } */
+
+/* select:focus { */
+/* 	color: black; */
+/* } */
+
+/* input[type="range"] { */
+/* 	height: 1.4em; */
+/* 	padding: 0 0.2em; */
+/* 	background: rgba(0, 0, 0, 0.5); */
+/* 	cursor: ew-resize; */
+/* 	border-radius: 0.7em; */
+/* } */
+
+/* input[type="range"]::-webkit-slider-thumb { */
+/* 	width: 1em; */
+/* 	height: 1em; */
+/* 	background: rgba(255, 255, 255, 0.3); */
+/* 	border: none; */
+/* 	outline: none; */
+/* 	border-radius: 50%; */
+/* 	-webkit-appearance: none; */
+/* } */
+
+@keyframes slide-in {
+	from {
+		left: 0;
+		width: 0;
+	}
+
+	to {
+		left: 0;
+		width: 100%;
+	}
+}
+
+/* util */
+
+.hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.disabled {
+	display: none !important;
+}
+
+/* fonts */
 
 @font-face {
 	font-family: Arimo;
@@ -24,15 +130,86 @@ h1, h2, h3, h4, h5, h6, p {
 	src: url(./font/FiraMono-Regular.otf);
 }
 
-/* layout */
+/* titlebar */
 
-.wrapper {
+.titlebar {
+	height: 2.4em;
+	display: flex;
+	align-items: center;
+	-webkit-app-region: drag;
+	cursor: default;
+}
+
+.titlebar > * {
+	-webkit-app-region: no-drag;
+}
+
+.titlebar > .left {
+	flex: 1;
+}
+
+.titlebar > .actions {
+	margin-right: 0.4em;
+}
+
+.titlebar > .actions > * {
+	width: 1.4em;
+	height: 1.4em;
+	display: inline-block;
+	background-position: center;
+	background-size: contain;
+}
+
+.titlebar > .actions > .minimize { background-image: url("img/button/minimize.svg"); }
+.titlebar > .actions > .maximize { background-image: url("img/button/maximize.svg"); }
+.titlebar > .actions > .close    { background-image: url("img/button/close.svg");    }
+
+/* login layout */
+
+.wrapper.login {
+	width: 100vw;
+	height: 100vh;
+	background: url(img/login.jpg) center / cover;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.wrapper.login > .titlebar {
+	width: 100vw;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 9;
+}
+
+.wrapper.login > .panel {
+	padding: 2em;
+	background: #161616;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	position: relative;
+	box-shadow: 0 0 1em 0 black;
+	border-radius: 0.5em;
+}
+
+.wrapper.login > .panel form {
+	display: flex;
+	justify-items: center;
+	flex-direction: column;
+}
+
+/* chat layout */
+
+.wrapper.chat {
 	width: 100vw;
 	height: 100vh;
 	display: flex;
 }
 
-.wrapper > .room-list-container {
+.wrapper.chat > .room-list-container {
 	width: 240px;
 	display: flex;
 	flex-direction: column;
@@ -53,14 +230,13 @@ h1, h2, h3, h4, h5, h6, p {
 	background: #161616;
 }
 
-.wrapper > .content {
+.wrapper.chat > .content {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
 }
 
 .content > .titlebar {
-	height: 2.4em;
 	background: #161616;
 }
 
