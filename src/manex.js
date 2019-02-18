@@ -6,9 +6,12 @@ let loadingSplash = document.getElementById("loading-splash");
 let loginWrapper = document.getElementById("login-wrapper");
 let chatWrapper = document.getElementById("chat-wrapper");
 
-let roomList = document.getElementById("room-list")
-let messageList = document.getElementById("message-list")
-let memberList = document.getElementById("member-list")
+let roomList = document.getElementById("room-list");
+let messageList = document.getElementById("message-list");
+let memberList = document.getElementById("member-list");
+
+let messageBoxForm = document.getElementById("messagebox-form");
+let messageBox = document.getElementById("messagebox");
 
 let rooms = undefined;
 
@@ -145,6 +148,23 @@ function logout() {
 
 	window.location.reload();
 }
+
+messageBoxForm.addEventListener("submit", () => {
+	if (!currentRoom) return;
+	if (!currentRoom.roomId) return;
+	if (messageBox.value.length == 0) return;
+
+	client.sendEvent(currentRoom.roomId, "m.room.message", {
+		"body": messageBox.value,
+		"msgtype": "m.text"
+	}, "").then((data) => {
+		openRoom(currentRoom);
+	}).catch((e) => {
+		console.log(e);
+	});
+
+	messageBox.value = "";
+});
 
 // util
 
