@@ -8,12 +8,12 @@ function createWindow() {
 	win = new BrowserWindow();
 
 	win.loadURL(url.format({
-		pathname: path.join(__dirname, 'src/login.html'),
+		pathname: path.join(__dirname, 'src/index.html'),
 		protocol: "file:",
 		slashes: true
 	}));
 
-	win.setBackgroundColor("#2C2F33");
+	win.setBackgroundColor("#212121");
 
 	win.setMinimumSize(800, 600);
 	win.setResizable(true);
@@ -23,5 +23,5 @@ function createWindow() {
 	win.on("closed", app.quit);
 }
 
-app.on("window-all-closed", () => { app.quit(); });
+app.on("window-all-closed", () => app.quit());
 app.on("ready", createWindow);

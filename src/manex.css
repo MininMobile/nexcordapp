@@ -1,0 +1,25 @@
+html, body {
+	width: 100vw;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+	background: #212121;
+	color: #ddd;
+	font-size: 1em;
+	font-family: Arimo;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: Arimo;
+	src: url(./font/Arimo-Regular.woff);
+}
+
+@font-face {
+	font-family: FiraMono;
+	src: url(./font/FiraMono-Regular.otf);
+}

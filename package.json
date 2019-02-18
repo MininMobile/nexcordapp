@@ -1,23 +1,23 @@
 {
-  "name": "nexcordapp",
-  "version": "1.0.0",
-  "description": "An optimized Discord client written from the ground-up.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MininMobile/nexcordapp.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/MininMobile/nexcordapp/issues"
-  },
-  "homepage": "https://github.com/MininMobile/nexcordapp#readme",
-  "dependencies": {
-    "discord.js": "^11.3.2",
-    "electron": "^2.0.6"
-  }
+	"name": "manex",
+	"version": "1.0.0",
+	"description": "The matrix client.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mininmobile/manex.git"
+	},
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/mininmobile/manex/issues"
+	},
+	"homepage": "https://github.com/mininmobile/manex#readme",
+	"dependencies": {
+		"electron": "^4.0.5",
+		"matrix-js-sdk": "^1.0.0"
+	}
 }
