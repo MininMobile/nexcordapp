@@ -27,6 +27,17 @@ let ctrl = false;
 let shift = false;
 let alt = false;
 
+{ // preserve window size
+	let size = JSON.parse(window.localStorage.size || "{}");
+
+	if (size.x == undefined) {
+		size = win.getBounds();
+		window.localStorage.size = JSON.stringify(size);
+	}
+
+	win.setBounds(size);
+}
+
 { // add login
 	if (window.localStorage.username && window.localStorage.token) {
 		client = matrix.createClient({
@@ -330,6 +341,17 @@ let alt = false;
 
 			case "Escape": if (shift) closeRoom(); break;
 		}
+	});
+
+	win.removeAllListeners("resize");
+	win.removeAllListeners("move");
+
+	win.on("resize", () => {
+		window.localStorage.size = JSON.stringify(win.getBounds());
+	});
+
+	win.on("move", () => {
+		window.localStorage.size = JSON.stringify(win.getBounds());
 	});
 
 	roomClose.addEventListener("click", closeRoom);
