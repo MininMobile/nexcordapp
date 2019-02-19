@@ -482,6 +482,7 @@ input[type="button"], input[type="submit"] {
 
 .message-list > .message > img.content {
 	width: 50%;
+	cursor: pointer;
 }
 
 .message-list > .message > .content.redacted::before {
