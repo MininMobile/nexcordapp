@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow } = require("electron");
 const path = require("path"),
 	  url = require("url");
 
@@ -6,6 +6,7 @@ let win;
 
 function createWindow() {
 	win = new BrowserWindow({
+		icon: path.join(__dirname, "src/img/logo/manexThick.png"),
 		minWidth: 800,
 		minHeight: 600,
 		resizable: true,
@@ -15,7 +16,7 @@ function createWindow() {
 	});
 
 	win.loadURL(url.format({
-		pathname: path.join(__dirname, 'src/index.html'),
+		pathname: path.join(__dirname, "src/index.html"),
 		protocol: "file:",
 		slashes: true
 	}));

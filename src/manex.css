@@ -183,6 +183,41 @@ input[type="button"], input[type="submit"] {
 	transition: opacity 0.3s;
 }
 
+
+.splash::before, .splash::after {
+	filter: blur(0.5em);
+}
+
+.splash::before {
+	content: "";
+	width: 100vw;
+	height: 50vh;
+	background-image: url(img/logo/manexThin.png);
+	background-size: 50%;
+	background-position: 55% -30%;
+	background-repeat: no-repeat;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0.2;
+}
+
+.splash::after {
+	content: "";
+	width: 100vw;
+	height: 50vh;
+	background-image: url(img/logo/manexThin.png);
+	background-size: 50%;
+	background-position: 45% 123.5%;
+	background-repeat: no-repeat;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 50vh;
+	opacity: 0.2;
+}
+
 .splash > .logo {
 	width: 5em;
 	height: 5em;
@@ -198,8 +233,8 @@ input[type="button"], input[type="submit"] {
 	top: 0;
 	left: 0;
 	border: 2px solid transparent;
-	border-top: 2px solid white;
-	border-bottom: 2px solid white;
+	border-left: 2px solid white;
+	border-right: 2px solid white;
 	border-radius: 50%;
 	animation: rotate 1s reverse infinite linear;
 }

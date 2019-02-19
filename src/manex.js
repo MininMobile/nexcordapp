@@ -131,11 +131,10 @@ let alt = false;
 			messageList.innerHTML = "";
 
 			room.timeline.forEach((msg) => {
-				if (msg.event.type == "m.room.redaction") return;
+				let supportedEvent = true;
 
 				let message = document.createElement("div");
 					message.classList.add("message");
-					messageList.appendChild(message);
 
 				let avatar = document.createElement("div");
 					avatar.classList.add("avatar");
@@ -226,6 +225,10 @@ let alt = false;
 	
 								text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
 							} break;
+
+							default: {
+								supportedEvent = false;
+							} break;
 						}
 
 						content.innerHTML = escapeHtml(text);
@@ -243,6 +246,8 @@ let alt = false;
 					message.appendChild(author);
 					message.appendChild(content);
 				}
+
+				if (supportedEvent) messageList.appendChild(message);
 			});
 		}
 
