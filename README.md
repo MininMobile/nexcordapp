@@ -1,6 +1,9 @@
 # manex
 The matrix client.
 
+![manex login](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_login.png)
+![manex chat](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_chat.png)
+
 ## Features
 * [x] send and read messages to and from your rooms
 * [ ] quoting, forwarding, mentions, and room mentions
