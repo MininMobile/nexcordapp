@@ -1,4 +1,7 @@
 const matrix = require("matrix-js-sdk");
+const remote = require("electron").remote;
+
+const win = remote.getCurrentWindow();
 
 let client;
 
@@ -233,6 +236,8 @@ let alt = false;
 			button.classList.add("selected");
 		}
 
+		messageBoxForm.classList.remove("disabled");
+
 		// update room menu
 		roomClose.classList.remove("disabled");
 		roomTitle.innerText = room.name;
@@ -249,6 +254,8 @@ let alt = false;
 		for (let i = 0; i < allButtons.length; i++) {
 			allButtons[i].classList.remove("selected");
 		}
+
+		messageBoxForm.classList.add("disabled");
 
 		messageList.innerHTML = "";
 		memberList.innerHTML = "";
@@ -277,6 +284,28 @@ let alt = false;
 }
 
 { // page actions
+	{ // titlebars
+		{ // login titlebar
+			let minimize = document.getElementById("login-action-minimize");
+			let maximize = document.getElementById("login-action-maximize");
+			let close = document.getElementById("login-action-close");
+
+			minimize.addEventListener("click", () => win.minimize());
+			maximize.addEventListener("click", () => toggleMaximize());
+			close.addEventListener("click", () => window.close());
+		}
+
+		{ // main titlebar
+			let minimize = document.getElementById("main-action-minimize");
+			let maximize = document.getElementById("main-action-maximize");
+			let close = document.getElementById("main-action-close");
+
+			minimize.addEventListener("click", () => win.minimize());
+			maximize.addEventListener("click", () => toggleMaximize());
+			close.addEventListener("click", () => window.close());
+		}
+	}
+
 	document.addEventListener("keydown", (e) => {
 		switch (e.code) {
 			case "ControlLeft": ctrl = true; break;
@@ -331,7 +360,22 @@ let alt = false;
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
 			.replace(/'/g, "&#039;");
-	 }
+	}
+
+	function toggleMaximize() {
+		let a = document.getElementById("login-action-maximize");
+		let b = document.getElementById("main-action-maximize");
+
+		if (win.isMaximized()) {
+			a.classList.remove("maximized");
+			b.classList.remove("maximized");
+			win.unmaximize();
+		} else {
+			a.classList.add("maximized");
+			b.classList.add("maximized");
+			win.maximize();
+		}
+	}
 
 	function showLoading() {
 		return new Promise((resolve, reject) => {

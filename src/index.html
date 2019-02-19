@@ -17,9 +17,9 @@
 		<div class="titlebar">
 			<div class="left"></div>
 			<div class="actions">
-				<div class="minimize"></div>
-				<div class="maximize"></div>
-				<div class="close"></div>
+				<div id="login-action-minimize" class="minimize"></div>
+				<div id="login-action-maximize" class="maximize"></div>
+				<div id="login-action-close" class="close"></div>
 			</div>
 		</div>
 		<div class="panel">
@@ -47,16 +47,16 @@
 			<div class="titlebar">
 				<div class="left"></div>
 				<div class="actions">
-					<div class="minimize"></div>
-					<div class="maximize"></div>
-					<div class="close"></div>
+					<div id="main-action-minimize" class="minimize"></div>
+					<div id="main-action-maximize" class="maximize"></div>
+					<div id="main-action-close" class="close"></div>
 				</div>
 			</div>
 			<div class="content-divider">
 				<div class="message-list-container">
 					<div id="message-list" class="message-list"></div>
 					<div class="messagebox">
-						<form id="messagebox-form" onsubmit="return false">
+						<form id="messagebox-form" class="disabled" onsubmit="return false">
 							<input id="messagebox" type="text" placeholder="Send Message">
 						</form>
 					</div>
