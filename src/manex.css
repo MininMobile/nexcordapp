@@ -352,6 +352,9 @@ input[type="button"], input[type="submit"] {
 	align-items: center;
 	flex: 1;
 	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	transition: background 0.2s;
 }
 
@@ -378,6 +381,23 @@ input[type="button"], input[type="submit"] {
 	overflow: hidden;
 	border-radius: 0.2em;
 }
+
+.room-list > .room::before {
+	content: "";
+	width: 1em;
+	height: 1em;
+	margin-top: 0.2em;
+	background: white;
+	position: absolute;
+	left: -1em;
+	border-radius: 50%;
+	transition: left 0.3s;
+}
+
+.room-list > .room.selected::before {
+	left: -0.5em;
+}
+
 
 /* member list */
 

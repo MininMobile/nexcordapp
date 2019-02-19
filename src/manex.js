@@ -1,6 +1,6 @@
 const matrix = require("matrix-js-sdk");
 
-const client = matrix.createClient("https://matrix.org");
+let client;
 
 // get big boys
 let loadingSplash = document.getElementById("loading-splash");
@@ -25,21 +25,23 @@ let shift = false;
 let alt = false;
 
 { // add login
-	let loginForm = document.getElementById("login-form");
-	let loginUsername = document.getElementById("login-username");
-	let loginPassword = document.getElementById("login-password");
+	if (window.localStorage.username && window.localStorage.token) {
+		client = matrix.createClient({
+			baseUrl: "https://matrix.org",
+			accessToken: window.localStorage.token,
+			userId: `@${window.localStorage.username}:matrix.org`
+		});
 
-	setTimeout(() => {
-		if (window.localStorage.username && window.localStorage.password) {
-			client.loginWithPassword(window.localStorage.username, window.localStorage.password)
-				.then((data) => startClient(data, false))
-				.catch((e) => console.error(e));
-		} else {
-			hideLoading();
-		}
-	}, 100);
+		setTimeout(() => startClient(), 100);
+	} else {
+		client = matrix.createClient("https://matrix.org");
+		setTimeout(() => hideLoading(), 100);
+	}
 
-	loginForm.addEventListener("submit", () => {
+	document.getElementById("login-form").addEventListener("submit", () => {
+		let loginUsername = document.getElementById("login-username");
+		let loginPassword = document.getElementById("login-password");
+
 		client.loginWithPassword(loginUsername.value, loginPassword.value)
 			.then((data) => startClient(data, true))
 			.catch((e) => console.error(e));
@@ -48,9 +50,12 @@ let alt = false;
 
 { // client actions
 	function startClient(data, fresh = false) {
-		if (!window.localStorage.username && !window.localStorage.password && fresh) {
+		if (!window.localStorage.username && !window.localStorage.token && fresh) {
+			let loginUsername = document.getElementById("login-username");
+			let loginPassword = document.getElementById("login-password");
+
 			window.localStorage.username = loginUsername.value;
-			window.localStorage.password = loginPassword.value;
+			window.localStorage.token = data.access_token;
 		}
 
 		showLoading().then(() => {
@@ -77,6 +82,7 @@ let alt = false;
 			let button = document.createElement("div");
 			button.classList.add("room");
 			button.innerText = r.name;
+			button.id = r.roomId;
 
 			button.addEventListener("click", () => {
 				openRoom(r);
@@ -194,6 +200,19 @@ let alt = false;
 			});
 		}
 
+		{ // show selected
+			let allButtons = document.getElementsByClassName("room");
+
+			for (let i = 0; i < allButtons.length; i++) {
+				allButtons[i].classList.remove("selected");
+			}
+
+			let button = document.getElementById(room.roomId);
+
+			button.classList.add("selected");
+		}
+
+		// update room menu
 		roomClose.classList.remove("disabled");
 		roomTitle.innerText = room.name;
 
@@ -204,6 +223,12 @@ let alt = false;
 	function closeRoom() {
 		currentRoom = undefined;
 
+		let allButtons = document.getElementsByClassName("room");
+
+		for (let i = 0; i < allButtons.length; i++) {
+			allButtons[i].classList.remove("selected");
+		}
+
 		messageList.innerHTML = "";
 		memberList.innerHTML = "";
 
@@ -213,8 +238,8 @@ let alt = false;
 	}
 
 	function logout() {
-		window.localStorage.removeItem("password");
 		window.localStorage.removeItem("username");
+		window.localStorage.removeItem("token");
 
 		client.stopClient();
 
