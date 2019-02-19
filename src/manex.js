@@ -137,6 +137,11 @@ let alt = false;
 					message.classList.add("message");
 					messageList.appendChild(message);
 
+				let avatar = document.createElement("div");
+					avatar.classList.add("avatar");
+					avatar.style.backgroundImage = "url('" +
+						msg.sender.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+
 				let author = document.createElement("div");
 					author.classList.add("author");
 
@@ -149,7 +154,9 @@ let alt = false;
 						title.innerText = msg.sender.name;
 						author.appendChild(title);
 
-					let date = "";
+					let timestamp = document.createElement("div");
+						timestamp.classList.add("timestamp");
+						author.appendChild(timestamp);
 
 					{ // get date
 						let t = msg.getDate();
@@ -166,13 +173,8 @@ let alt = false;
 						month = month.toString().length == 1 ? `0${month}` : month;
 						day = day.toString().length == 1 ? `0${day}` : day;
 					
-						date = `${h}:${m} ${month}/${day}/${t.getFullYear()}`;
+						timestamp.innerText = `${h}:${m} ${month}/${day}/${t.getFullYear()}`;
 					}
-
-					let timestamp = document.createElement("div");
-						timestamp.classList.add("timestamp");
-						timestamp.innerText = date;
-						author.appendChild(timestamp);
 				}
 
 				{ // message content
@@ -230,8 +232,17 @@ let alt = false;
 					}
 				}
 
-				message.classList.contains("no-author") ? message.appendChild(content) : message.appendChild(author);
-				message.classList.contains("no-author") ? message.appendChild(author) : message.appendChild(content);
+				if (message.classList.contains("no-author")) {
+					message.appendChild(avatar);
+
+					message.appendChild(content);
+					message.appendChild(author);
+				} else {
+					author.insertBefore(avatar, author.firstElementChild);
+
+					message.appendChild(author);
+					message.appendChild(content);
+				}
 			});
 		}
 

@@ -421,6 +421,15 @@ input[type="button"], input[type="submit"] {
 	word-break: break-word;
 }
 
+.message .avatar {
+	width: 1em;
+	height: 1em;
+	margin-right: 0.5em;
+	background-size: cover;
+	background-position: center;
+	border-radius: 50%;
+}
+
 .message-list > .message > .author > .title {
 	margin-right: 0.5em;
 	color: rgba(255, 255, 255, 0.65);
@@ -453,6 +462,12 @@ input[type="button"], input[type="submit"] {
 	margin: 0.3em 0;
 	display: block;
 	background: rgba(255, 255, 255, 0.1);
+}
+
+.message > .avatar {
+	display: inline-block;
+	margin-right: 0;
+	margin-left: 0.5em;
 }
 
 .message.no-author > .author > .title {
