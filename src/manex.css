@@ -414,10 +414,6 @@ input[type="button"], input[type="submit"] {
 
 /* message list */
 
-.message.no-author > .author {
-	display: none !important;
-}
-
 .message-list > .message > .author {
 	margin: 0 0.5em;
 	display: flex;
@@ -440,6 +436,16 @@ input[type="button"], input[type="submit"] {
 	word-break: break-word;
 }
 
+.message-list > .message > .content.redacted::before {
+	content: "REDACTED";
+	width: 240px;
+	padding: 0.2em;
+	background: black;
+	display: block;
+	text-align: center;
+	font-size: 0.9em;
+}
+
 .message-list > .message + .message::before {
 	content: "";
 	width: 100%;
@@ -447,6 +453,15 @@ input[type="button"], input[type="submit"] {
 	margin: 0.3em 0;
 	display: block;
 	background: rgba(255, 255, 255, 0.1);
+}
+
+.message.no-author > .author > .title {
+	display: none;
+}
+
+.message.no-author > .author, .message.no-author > .content {
+	margin-right: 0;
+	display: inline-block;
 }
 
 /* message box */

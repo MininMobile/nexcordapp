@@ -81,8 +81,9 @@ let alt = false;
 		rooms.forEach((r) => {
 			let button = document.createElement("div");
 			button.classList.add("room");
-			button.innerText = r.name;
 			button.id = r.roomId;
+			button.title = r.name;
+			button.innerText = r.name;
 
 			button.addEventListener("click", () => {
 				openRoom(r);
@@ -101,6 +102,7 @@ let alt = false;
 			room.getJoinedMembers().forEach((m) => {
 				let button = document.createElement("div");
 				button.classList.add("member");
+				button.title = m.name;
 				button.innerText = m.name;
 
 				button.addEventListener("click", () => {
@@ -115,17 +117,17 @@ let alt = false;
 			messageList.innerHTML = "";
 
 			room.timeline.forEach((msg) => {
+				if (msg.event.type == "m.room.redaction") return;
+
 				let message = document.createElement("div");
 					message.classList.add("message");
 					messageList.appendChild(message);
 
 				let author = document.createElement("div");
-				author.classList.add("author");
-					message.appendChild(author);
+					author.classList.add("author");
 
 				let content = document.createElement("div");
 					content.classList.add("content");
-					message.appendChild(content);
 
 				{ // author info
 					let title = document.createElement("div");
@@ -160,43 +162,62 @@ let alt = false;
 				}
 
 				{ // message content
-					let text = "";
+					let redacted = false;
 
-					switch (msg.event.type) {
-						case "m.room.message": {
-							text = msg.event.content.body;
-						} break;
-
-						case "m.room.member": {
-							message.classList.add("no-author");
-
-							switch (msg.event.content.membership) {
-								case "join": {
-									text = `${msg.sender.name} has joined the group.`;
-								} break;
-
-								case "leave": {
-									if (msg.sender != msg.target) {
-										text = `${msg.sender.name} has kicked ${msg.target.name}.`;
-
-										if (msg.event.content.reason)
-											text += ` Reason: ${msg.event.content.reason}`;
-									} else {
-										text = `${msg.sender.name} has left the group.`;
-									}
-								} break;
-							}
-						} break;
-
-						case "m.room.topic": {
-							message.classList.add("no-author");
-
-							text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
-						} break;
+					if (msg.event.unsigned) {
+						if (msg.event.unsigned.redacted_because) {
+							redacted = true;
+						}
 					}
 
-					content.innerHTML = escapeHtml(text);
+					if (redacted) {
+						content.classList.add("redacted");
+					} else {
+						let text = "";
+
+						switch (msg.event.type) {
+							case "m.room.message": {
+								text = msg.event.content.body;
+							} break;
+	
+							case "m.room.member": {
+								message.classList.add("no-author");
+	
+								switch (msg.event.content.membership) {
+									case "join": {
+										text = `${msg.sender.name} has joined the room.`;
+									} break;
+
+									case "invite": {
+										text = `${msg.sender.name} invited ${msg.target.name}.`;
+									} break;
+	
+									case "leave": {
+										if (msg.sender != msg.target) {
+											text = `${msg.sender.name} kicked ${msg.target.name}.`;
+	
+											if (msg.event.content.reason)
+												text += ` Reason: ${msg.event.content.reason}`;
+										} else {
+											text = `${msg.sender.name} has left the room.`;
+										}
+									} break;
+								}
+							} break;
+	
+							case "m.room.topic": {
+								message.classList.add("no-author");
+	
+								text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
+							} break;
+						}
+
+						content.innerHTML = escapeHtml(text);
+					}
 				}
+
+				message.classList.contains("no-author") ? message.appendChild(content) : message.appendChild(author);
+				message.classList.contains("no-author") ? message.appendChild(author) : message.appendChild(content);
 			});
 		}
 
