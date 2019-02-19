@@ -423,11 +423,12 @@ input[type="button"], input[type="submit"] {
 	margin: 0 0.5em;
 	display: flex;
 	align-items: center;
+	word-break: break-word;
 }
 
 .message-list > .message > .author > .title {
-	color: rgba(255, 255, 255, 0.65);
 	margin-right: 0.5em;
+	color: rgba(255, 255, 255, 0.65);
 }
 
 .message-list > .message > .author > .timestamp {
@@ -437,6 +438,7 @@ input[type="button"], input[type="submit"] {
 
 .message-list > .message > .content {
 	margin: 0 0.5em;
+	word-break: break-word;
 }
 
 .message-list > .message + .message::before {
