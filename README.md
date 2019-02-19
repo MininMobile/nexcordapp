@@ -1,6 +1,13 @@
 # manex
 The matrix client.
 
+## Features
+* [x] send and read messages to and from your rooms
+* [ ] quoting, forwarding, mentions, and room mentions
+* [ ] room/member options
+* [ ] create rooms
+* [ ] favorite rooms
+
 ## Running
 Currently, you *could* build manex but since there are rapid updates and the fact that it is in very, very early development means you wouldn't want to use it as your daily driver. But this is how you would run it if you wanted to try it out/help out with development;
 
