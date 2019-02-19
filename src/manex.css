@@ -480,6 +480,10 @@ input[type="button"], input[type="submit"] {
 	word-break: break-word;
 }
 
+.message-list > .message > img.content {
+	width: 50%;
+}
+
 .message-list > .message > .content.redacted::before {
 	content: "REDACTED";
 	width: 240px;

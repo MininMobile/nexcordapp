@@ -14,6 +14,7 @@ let roomList = document.getElementById("room-list");
 let messageList = document.getElementById("message-list");
 let memberList = document.getElementById("member-list");
 // get message box
+let messageBoxFormContainer = document.getElementById("messagebox-form-container");
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
 // get other shit
@@ -144,9 +145,6 @@ let alt = false;
 				let author = document.createElement("div");
 					author.classList.add("author");
 
-				let content = document.createElement("div");
-					content.classList.add("content");
-
 				{ // author info
 					let title = document.createElement("div");
 						title.classList.add("title");
@@ -176,65 +174,76 @@ let alt = false;
 					}
 				}
 
-				{ // message content
-					let redacted = false;
+				let content;
 
-					if (msg.event.unsigned) {
-						if (msg.event.unsigned.redacted_because) {
-							redacted = true;
+				if (msg.event.content.msgtype == "m.image") {
+					content = document.createElement("img");
+						content.classList.add("content");
+						content.src = client.mxcUrlToHttp(msg.event.content.info.thumbnail_url);
+				} else {
+					content = document.createElement("div");
+						content.classList.add("content");
+
+					{ // message content
+						let redacted = false;
+	
+						if (msg.event.unsigned) {
+							if (msg.event.unsigned.redacted_because) {
+								redacted = true;
+							}
 						}
-					}
-
-					if (redacted) {
-						content.classList.add("redacted");
-					} else {
-						let text = "";
-
-						switch (msg.event.type) {
-							case "m.room.message": {
-								text = msg.event.content.body;
-							} break;
 	
-							case "m.room.member": {
-								message.classList.add("no-author");
+						if (redacted) {
+							content.classList.add("redacted");
+						} else {
+							let text = "";
 	
-								switch (msg.event.content.membership) {
-									case "join": {
-										text = `${msg.sender.name} has joined the room.`;
-									} break;
-
-									case "invite": {
-										text = `${msg.sender.name} invited ${msg.target.name}.`;
-									} break;
+							switch (msg.event.type) {
+								case "m.room.message": {
+									text = msg.event.content.body;
+								} break;
+		
+								case "m.room.member": {
+									message.classList.add("no-author");
+		
+									switch (msg.event.content.membership) {
+										case "join": {
+											text = `${msg.sender.name} has joined the room.`;
+										} break;
 	
-									case "leave": {
-										if (msg.sender != msg.target) {
-											text = `${msg.sender.name} kicked ${msg.target.name}.`;
+										case "invite": {
+											text = `${msg.sender.name} invited ${msg.target.name}.`;
+										} break;
+		
+										case "leave": {
+											if (msg.sender != msg.target) {
+												text = `${msg.sender.name} kicked ${msg.target.name}.`;
+		
+												if (msg.event.content.reason)
+													text += ` Reason: ${msg.event.content.reason}`;
+											} else {
+												text = `${msg.sender.name} has left the room.`;
+											}
+										} break;
+									}
+								} break;
+		
+								case "m.room.topic": {
+									message.classList.add("no-author");
+		
+									text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
+								} break;
 	
-											if (msg.event.content.reason)
-												text += ` Reason: ${msg.event.content.reason}`;
-										} else {
-											text = `${msg.sender.name} has left the room.`;
-										}
-									} break;
-								}
-							} break;
+								default: {
+									supportedEvent = false;
+								} break;
+							}
 	
-							case "m.room.topic": {
-								message.classList.add("no-author");
-	
-								text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
-							} break;
-
-							default: {
-								supportedEvent = false;
-							} break;
+							content.innerHTML = escapeHtml(text);
 						}
-
-						content.innerHTML = escapeHtml(text);
 					}
 				}
-
+	
 				if (message.classList.contains("no-author")) {
 					message.appendChild(avatar);
 
@@ -263,7 +272,9 @@ let alt = false;
 			button.classList.add("selected");
 		}
 
-		messageBoxForm.classList.remove("disabled");
+		// reveal elements
+		messageBoxFormContainer.classList.remove("disabled");
+		memberList.classList.remove("disabled");
 
 		// update room menu
 		roomClose.classList.remove("disabled");
@@ -276,19 +287,23 @@ let alt = false;
 	function closeRoom() {
 		currentRoom = undefined;
 
+		// remove selection indicator
 		let allButtons = document.getElementsByClassName("room");
 
 		for (let i = 0; i < allButtons.length; i++) {
 			allButtons[i].classList.remove("selected");
 		}
 
-		messageBoxForm.classList.add("disabled");
+		// hide elements
+		messageBoxFormContainer.classList.add("disabled");
+		memberList.classList.add("disabled");
 
+		// clear lists
 		messageList.innerHTML = "";
 		memberList.innerHTML = "";
 
+		// update room menu
 		roomTitle.innerText = "Manex";
-
 		roomClose.classList.add("disabled");
 	}
 
@@ -362,13 +377,11 @@ let alt = false;
 	win.removeAllListeners("resize");
 	win.removeAllListeners("move");
 
-	win.on("resize", () => {
-		window.localStorage.size = JSON.stringify(win.getBounds());
-	});
+	win.on("resize", () =>
+		window.localStorage.size = JSON.stringify(win.getBounds()));
 
-	win.on("move", () => {
-		window.localStorage.size = JSON.stringify(win.getBounds());
-	});
+	win.on("move", () =>
+		window.localStorage.size = JSON.stringify(win.getBounds()));
 
 	roomClose.addEventListener("click", closeRoom);
 
