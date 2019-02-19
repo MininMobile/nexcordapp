@@ -384,20 +384,19 @@ input[type="button"], input[type="submit"] {
 
 .room-list > .room::before {
 	content: "";
-	width: 1em;
-	height: 1em;
-	margin-top: 0.2em;
+	width: 0.8em;
+	height: 0.8em;
+	margin-top: 0.3em;
 	background: white;
 	position: absolute;
-	left: -1em;
+	left: -0.8em;
 	border-radius: 50%;
 	transition: left 0.3s;
 }
 
 .room-list > .room.selected::before {
-	left: -0.5em;
+	left: -0.4em;
 }
-
 
 /* member list */
 
