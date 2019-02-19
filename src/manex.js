@@ -108,7 +108,7 @@ let alt = false;
 		{ // get timeline
 			messageList.innerHTML = "";
 
-			room.timeline.forEach((m) => {
+			room.timeline.forEach((msg) => {
 				let message = document.createElement("div");
 					message.classList.add("message");
 					messageList.appendChild(message);
@@ -124,39 +124,59 @@ let alt = false;
 				{ // author info
 					let title = document.createElement("div");
 						title.classList.add("title");
-						title.innerText = m.sender.name;
+						title.innerText = msg.sender.name;
 						author.appendChild(title);
+
+					let date = "";
+
+					{ // get date
+						let t = msg.getDate();
+
+						let h = t.getHours();
+						let m = t.getMinutes();
+					
+						h = h.toString().length == 1 ? `0${h}` : h;
+						m = m.toString().length == 1 ? `0${m}` : m;
+					
+						let month = t.getMonth() + 1;
+						let day = t.getDate();
+					
+						month = month.toString().length == 1 ? `0${month}` : month;
+						day = day.toString().length == 1 ? `0${day}` : day;
+					
+						date = `${h}:${m} ${month}/${day}/${t.getFullYear()}`;
+					}
 
 					let timestamp = document.createElement("div");
 						timestamp.classList.add("timestamp");
-						timestamp.innerText = m.getDate();
+						timestamp.innerText = date;
 						author.appendChild(timestamp);
 				}
 
 				{ // message content
-					let text;
+					let text = "";
 
-					switch (m.event.type) {
+					switch (msg.event.type) {
 						case "m.room.message": {
-							text = m.event.content.body;
+							text = msg.event.content.body;
 						} break;
 
 						case "m.room.member": {
 							message.classList.add("no-author");
 
-							switch (m.event.content.membership) {
+							switch (msg.event.content.membership) {
 								case "join": {
-									text = `${m.sender.name} has joined the group.`;
+									text = `${msg.sender.name} has joined the group.`;
 								} break;
 
 								case "leave": {
-									if (m.target) {
-										text = `${m.sender.name} has kicked ${m.target.name}.`;
+									if (msg.sender != msg.target) {
+										text = `${msg.sender.name} has kicked ${msg.target.name}.`;
 
-										if (m.event.content.reason)
-											text += ` Reason: ${m.event.content.reason}`;
+										if (msg.event.content.reason)
+											text += ` Reason: ${msg.event.content.reason}`;
 									} else {
-										text = `${m.sender.name} has left the group.`;
+										text = `${msg.sender.name} has left the group.`;
 									}
 								} break;
 							}
@@ -165,7 +185,7 @@ let alt = false;
 						case "m.room.topic": {
 							message.classList.add("no-author");
 
-							text = `${m.sender.name} set the topic to "${m.event.content.topic}".`;
+							text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
 						} break;
 					}
 

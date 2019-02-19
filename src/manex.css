@@ -373,6 +373,9 @@ input[type="button"], input[type="submit"] {
 	margin: 0.5em 1em;
 	font-size: 0.9em;
 	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	border-radius: 0.2em;
 }
 
@@ -384,6 +387,9 @@ input[type="button"], input[type="submit"] {
 	margin: 0.5em 1em;
 	font-size: 0.9em;
 	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	border-radius: 0.2em;
 }
 
