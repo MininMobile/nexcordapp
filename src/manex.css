@@ -498,6 +498,21 @@ input[type="button"], input[type="submit"] {
 	-webkit-user-select: initial;
 }
 
+.message-list-container > .message-list:empty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.message-list-container > .message-list:empty::before {
+	content: "...welcome to the hollow abyss which is your dashboard...";
+	width: 240px;
+	color: rgba(255, 255, 255, 0.5);
+	display: block;
+	text-align: center;
+	font-style: italic;
+}
+
 .message-list-container > .messagebox {
 	height: 2.4em;
 	background: #161616;
