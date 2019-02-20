@@ -92,23 +92,109 @@ let alt = false;
 	}
 
 	function getRooms() {
-		roomList.innerHTML = "";
-
 		rooms = client.getRooms();
 
-		rooms.forEach((r) => {
-			let button = document.createElement("div");
-			button.classList.add("room");
-			button.id = r.roomId;
-			button.title = r.name;
-			button.innerText = r.name;
+		let favoriteRooms = [
+			"!VcucjFBPGgOCxWqUef:matrix.org",
+			"!OJHURinWBwWjKbTXnm:matrix.org",
+			"!lnWMssZueroGmbWUYY:matrix.org",
+		]
 
-			button.addEventListener("click", () => {
-				openRoom(r);
+		let directRooms = [
+			"!ZnyoyBPxClDwtMjNKB:matrix.org",
+			"!pvkYohSCAsiykTAoTS:matrix.org",
+			"!aCqcCKwMQhxyKokxZW:matrix.org",
+			"!uAGPixXtbNniyJWAZs:matrix.org",
+			"!yIKypQpzLQmfULRTTK:matrix.org",
+		]
+
+		roomList.innerHTML = "";
+
+		{ // favorites
+			let favoriteTitle = document.createElement("div");
+			let favoriteList = document.createElement("div");
+
+			favoriteTitle.classList.add("catagory");
+			favoriteTitle.innerText = "Favorites";
+			roomList.appendChild(favoriteTitle);
+
+			favoriteList.classList.add("list");
+			roomList.appendChild(favoriteList);
+
+			rooms.forEach((r) => {
+				if (!favoriteRooms.includes(r.roomId)) return;
+
+				let button = document.createElement("div");
+				button.classList.add("room");
+				button.id = r.roomId;
+				button.title = r.name;
+				button.innerText = r.name;
+	
+				button.addEventListener("click", () => {
+					openRoom(r);
+				});
+	
+				favoriteList.appendChild(button);
 			});
+		}
 
-			roomList.appendChild(button);
-		});
+		{ // directs
+			let directTitle = document.createElement("div");
+			let directList = document.createElement("div");
+
+			directTitle.classList.add("catagory");
+			directTitle.innerText = "People";
+			roomList.appendChild(directTitle);
+
+			directList.classList.add("list");
+			roomList.appendChild(directList);
+
+			rooms.forEach((r) => {
+				if (!directRooms.includes(r.roomId)) return;
+
+				let button = document.createElement("div");
+				button.classList.add("room");
+				button.id = r.roomId;
+				button.title = r.name;
+				button.innerText = r.name;
+	
+				button.addEventListener("click", () => {
+					openRoom(r);
+				});
+	
+				directList.appendChild(button);
+			});
+		}
+
+		{ // other
+			let normalTitle = document.createElement("div");
+			let normalList = document.createElement("div");
+
+			normalTitle.classList.add("catagory");
+			normalTitle.innerText = "Rooms";
+			roomList.appendChild(normalTitle);
+
+			normalList.classList.add("list");
+			roomList.appendChild(normalList);
+
+			rooms.forEach((r) => {
+				if (favoriteRooms.includes(r.roomId) ||
+					directRooms.includes(r.roomId))
+						return;
+
+				let button = document.createElement("div");
+				button.classList.add("room");
+				button.id = r.roomId;
+				button.title = r.name;
+				button.innerText = r.name;
+	
+				button.addEventListener("click", () => {
+					openRoom(r);
+				});
+	
+				normalList.appendChild(button);
+			});
+		}
 	}
 
 	function openRoom(room) {
