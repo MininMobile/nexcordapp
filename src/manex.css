@@ -141,6 +141,20 @@ input[type="button"], input[type="submit"] {
 	display: none !important;
 }
 
+.button {
+	padding: 0.6em 0.7em;
+	margin-left: 0.8em;
+	background: rgba(0, 0, 0, 0.2);
+	display: inline-block;
+	border-radius: 0.5em;
+	font-size: 0.9em;
+	cursor: pointer;
+}
+
+.button.primary {
+	background: var(--accent);
+}
+
 .avatar {
 	width: 1em;
 	height: 1em;
@@ -332,6 +346,24 @@ input[type="button"], input[type="submit"] {
 	top: 0;
 	z-index: 99;
 	transition: opacity 0.3s;
+}
+
+.dialog .dialog-box {
+	background: #262626;
+	border-radius: 0.3em;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.8);
+}
+
+.dialog .dialog-content {
+	padding: 1.5em;
+}
+
+.dialog .dialog-box > .buttons {
+	padding: 0.8em;
+	background: #161616;
+	border-bottom-left-radius: 0.3em;
+	border-bottom-right-radius: 0.3em;
+	text-align: right;
 }
 
 .dialog .image-preview {

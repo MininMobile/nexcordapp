@@ -154,9 +154,16 @@ let ctrl = false,
 				settings.classList.add("settings");
 				container.appendChild(settings);
 
-			let logout = document.createElement("div");
-				logout.classList.add("logout");
-				container.appendChild(logout);
+			let logoutButton = document.createElement("div");
+				logoutButton.classList.add("logout");
+				logoutButton.addEventListener("click", () => {
+					showDialog(generateOptionDialog(
+						"Are you sure you would like to log out?",
+						() => logout(),
+						() => hideDialog(),
+					));
+				});
+				container.appendChild(logoutButton);
 		}
 	}
 
@@ -710,6 +717,48 @@ let ctrl = false,
 			b.classList.add("maximized");
 			win.maximize();
 		}
+	}
+
+	function generateOptionDialog(text, acceptAction, declineAction = undefined, cancelAction = undefined) {
+		let container = document.createElement("div");
+			container.classList.add("dialog-box");
+
+		let content = document.createElement("div");
+			content.classList.add("dialog-content");
+			content.innerText = text;
+			container.appendChild(content);
+
+		let buttons = document.createElement("div");
+			buttons.classList.add("buttons");
+			container.appendChild(buttons);
+
+		{ // generate buttons
+			{ // accept button
+				let button = document.createElement("div");
+				button.classList.add("button", "primary");
+				button.innerText = declineAction ? "Accept" : "Ok";
+				button.addEventListener("click", acceptAction);
+				buttons.appendChild(button);
+			}
+			
+			if (declineAction) { // decline button
+				let button = document.createElement("div");
+				button.classList.add("button");
+				button.innerText = "Decline";
+				button.addEventListener("click", declineAction);
+				buttons.appendChild(button);
+			}
+			
+			if (cancelAction) { // cancel button
+				let button = document.createElement("div");
+				button.classList.add("button");
+				button.innerText = "Cancel"
+				button.addEventListener("click", cancelAction);
+				buttons.appendChild(button);
+			}
+		}
+
+		return container;
 	}
 
 	function showContext(menu, position = { x: 0, y: 0 }) {
