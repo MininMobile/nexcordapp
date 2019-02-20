@@ -1,3 +1,7 @@
+:root {
+	--accent: #673ab7;
+}
+
 html, body {
 	width: 100vw;
 	height: 100vh;
@@ -260,6 +264,36 @@ input[type="button"], input[type="submit"] {
 	}
 }
 
+/* dialogs */
+
+.dialog {
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left: 0;
+	top: 0;
+	transition: opacity 0.3s;
+}
+
+.dialog .image-preview {
+	max-width: 50vw;
+	max-height: 50vh;
+	display: block;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.8);
+}
+
+.dialog .image-preview-link {
+	color: #ccc !important;
+	display: block;
+	font-size: 0.9em;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 /* login layout */
 
 .wrapper.login {
@@ -481,7 +515,8 @@ input[type="button"], input[type="submit"] {
 }
 
 .message-list > .message > img.content {
-	width: 50%;
+	max-width: 50%;
+	max-height: 50vh;
 	cursor: pointer;
 }
 

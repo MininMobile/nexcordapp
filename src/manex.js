@@ -1,4 +1,5 @@
 const matrix = require("matrix-js-sdk");
+const open = require("open");
 const remote = require("electron").remote;
 
 const win = remote.getCurrentWindow();
@@ -18,6 +19,7 @@ let messageBoxFormContainer = document.getElementById("messagebox-form-container
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
 // get other shit
+let dialogContainer = document.getElementById("dialog");
 let roomTitle = document.getElementById("room-title");
 let roomClose = document.getElementById("room-close");
 
@@ -178,8 +180,27 @@ let alt = false;
 
 				if (msg.event.content.msgtype == "m.image") {
 					content = document.createElement("img");
-						content.classList.add("content");
-						content.src = client.mxcUrlToHttp(msg.event.content.info.thumbnail_url);
+					content.classList.add("content");
+					content.src = client.mxcUrlToHttp(msg.event.content.info.thumbnail_url);
+					content.title = `${msg.event.content.body}`;
+
+					content.addEventListener("click", () => {
+						let container = document.createElement("div");
+
+						let image = document.createElement("img");
+							image.classList.add("image-preview");
+							image.src = client.mxcUrlToHttp(msg.event.content.url);
+							container.appendChild(image);
+
+						let link = document.createElement("div");
+							link.classList.add("image-preview-link");
+							link.innerText = "Open Original";
+							link.addEventListener("click", () =>
+								open(client.mxcUrlToHttp(msg.event.content.url)));
+							container.appendChild(link);
+
+						showDialog(container);
+					});
 				} else {
 					content = document.createElement("div");
 						content.classList.add("content");
@@ -374,16 +395,13 @@ let alt = false;
 		}
 	});
 
-	win.removeAllListeners("resize");
-	win.removeAllListeners("move");
-
-	win.on("resize", () =>
-		window.localStorage.size = JSON.stringify(win.getBounds()));
-
-	win.on("move", () =>
-		window.localStorage.size = JSON.stringify(win.getBounds()));
-
 	roomClose.addEventListener("click", closeRoom);
+
+	dialogContainer.addEventListener("mouseup", (e) => {
+		if (e.target == dialogContainer) {
+			hideDialog();
+		}
+	});
 
 	messageBoxForm.addEventListener("submit", () => {
 		if (!currentRoom) return;
@@ -401,6 +419,15 @@ let alt = false;
 
 		messageBox.value = "";
 	});
+
+	win.removeAllListeners("resize");
+	win.removeAllListeners("move");
+
+	win.on("resize", () =>
+		window.localStorage.size = JSON.stringify(win.getBounds()));
+
+	win.on("move", () =>
+		window.localStorage.size = JSON.stringify(win.getBounds()));
 }
 
 { // util
@@ -426,6 +453,19 @@ let alt = false;
 			b.classList.add("maximized");
 			win.maximize();
 		}
+	}
+
+	function showDialog(content) {
+		dialogContainer.appendChild(content);
+		dialogContainer.classList.remove("hidden");
+	}
+
+	function hideDialog(content) {
+		dialogContainer.classList.add("hidden");
+
+		setTimeout(() => {
+			dialogContainer.innerHTML = "";
+		}, 300);
 	}
 
 	function showLoading() {
