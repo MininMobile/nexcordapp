@@ -368,6 +368,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .room-list-container > .room-list {
+	padding: 0.5em 0;
 	flex: 1;
 	overflow: auto;
 	overflow-y: auto;
@@ -452,6 +453,18 @@ input[type="button"], input[type="submit"] {
 }
 
 /* room list */
+
+.room-list > .catagory {
+	padding: 0 0.3em;
+	padding-bottom: 0.3em;
+	margin: 0 0.5em;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+}
+
+.room-list > .list.hidden {
+	height: 0;
+}
 
 .room-list > .list > .room {
 	background: rgba(0, 0, 0, 0.2);
