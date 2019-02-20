@@ -539,13 +539,6 @@ input[type="button"], input[type="submit"] {
 	transition: background-position 0.2s, border-left 0.2s;
 }
 
-.room-list > .list > .room > span {
-	flex: 1;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
 .room-list > .list > .room:hover  {
 	border-left: 3px solid var(--accent);
 	background-position: 0;
@@ -556,18 +549,55 @@ input[type="button"], input[type="submit"] {
 	background-position: 0;
 }
 
-/* member list */
+.room-list > .list > .room > .avatar {
+	width: 1em;
+	height: 1em;
+	margin-right: 1em;
+	background-size: cover;
+	background-position: center;
+	border-radius: 50%;
+}
 
-.member-list > .member {
-	background: rgba(0, 0, 0, 0.1);
-	padding: 0.25em 0.5em;
-	margin: 0.5em 1em;
-	font-size: 0.9em;
-	cursor: pointer;
+.room-list > .list > .room > span {
+	flex: 1;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	border-radius: 0.2em;
+}
+
+/* member list */
+
+.member-list > .member {
+	height: 2em;
+	padding-right: 1em;
+	background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent) no-repeat;
+	background-position: 240px;
+	display: flex;
+	align-items: center;
+	font-size: 0.9em;
+	text-align: right;
+	cursor: pointer;
+	transition: background-position 0.2s;
+}
+
+.member-list > .member:hover  {
+	background-position: 0;
+}
+
+.member-list > .member > .avatar {
+	width: 1em;
+	height: 1em;
+	margin-left: 1em;
+	background-size: cover;
+	background-position: center;
+	border-radius: 50%;
+}
+
+.member-list > .member > span {
+	flex: 1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 /* message list */

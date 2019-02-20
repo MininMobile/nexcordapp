@@ -226,13 +226,18 @@ let alt = false;
 
 			room.getJoinedMembers().forEach((m) => {
 				let button = document.createElement("div");
-				button.classList.add("member");
-				button.title = m.name;
-				button.innerText = m.name;
-
-				button.addEventListener("click", () => {
-					// smth
-				});
+					button.classList.add("member");
+					button.title = m.name;
+	
+				let text = document.createElement("span");
+					text.innerText = m.name;
+					button.appendChild(text);
+	
+				let avatar = document.createElement("div");
+					avatar.classList.add("avatar");
+					avatar.style.backgroundImage = "url('" +
+						m.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+					button.appendChild(avatar);
 
 				memberList.appendChild(button);
 			});
