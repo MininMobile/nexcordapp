@@ -118,10 +118,7 @@ let alt = false;
 				button.id = room.roomId;
 				button.title = room.name;
 
-			let avatar = document.createElement("div");
-				avatar.classList.add("avatar");
-				avatar.style.backgroundImage = "url('" +
-					room.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+			let avatar = getUserAvatar(room);
 				button.appendChild(avatar);
 
 			let text = document.createElement("span");
@@ -228,15 +225,12 @@ let alt = false;
 				let button = document.createElement("div");
 					button.classList.add("member");
 					button.title = m.name;
-	
+
 				let text = document.createElement("span");
 					text.innerText = m.name;
 					button.appendChild(text);
-	
-				let avatar = document.createElement("div");
-					avatar.classList.add("avatar");
-					avatar.style.backgroundImage = "url('" +
-						m.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+
+				let avatar = getUserAvatar(m);
 					button.appendChild(avatar);
 
 				memberList.appendChild(button);
@@ -252,10 +246,7 @@ let alt = false;
 				let message = document.createElement("div");
 					message.classList.add("message");
 
-				let avatar = document.createElement("div");
-					avatar.classList.add("avatar");
-					avatar.style.backgroundImage = "url('" +
-						msg.sender.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+				let avatar = getUserAvatar(msg.sender);
 
 				let author = document.createElement("div");
 					author.classList.add("author");
@@ -576,6 +567,43 @@ let alt = false;
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
 			.replace(/'/g, "&#039;");
+	}
+
+	function ifResource(url) {
+		let http = new XMLHttpRequest();
+
+		http.open("HEAD", url, false);
+		http.send();
+
+		return http.status != 404;
+	}
+
+	function getUserAvatar(member) {
+		let avatar = document.createElement("div");
+			avatar.classList.add("avatar");
+
+		let avi;
+
+		if (member.getMxcAvatarUrl) {
+			if (member.getMxcAvatarUrl()) {
+				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
+			}
+		} else {
+			if (member.getAvatarFallbackMember()) {
+				avi = member.getAvatarFallbackMember().getAvatarUrl().replace("undefined", "https://matrix.org");
+			} else if (ifResource(member.getAvatarUrl().replace("undefined", "https://matrix.org"))) {
+				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
+			}
+		}
+
+		if (avi) {
+			avatar.style.backgroundImage = `url("${avi}")`;
+		} else {
+			avatar.classList.add("none");
+			avatar.setAttribute("data", member.name[0] == "@" ? member.name[1] : member.name[0]);
+		}
+
+		return avatar;
 	}
 
 	function toggleFavorite(roomId) {

@@ -7,6 +7,7 @@ The matrix client.
 ## Features
 * [x] send and read messages to and from your rooms
 * [ ] quoting, forwarding, mentions, and room mentions
+* [ ] full customizable, support for themes and plugins/extensions
 * [ ] room/member options
 * [ ] create rooms
 * [ ] favorite rooms

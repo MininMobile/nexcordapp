@@ -141,6 +141,20 @@ input[type="button"], input[type="submit"] {
 	display: none !important;
 }
 
+.avatar.none {
+	background: var(--accent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.avatar.none::before {
+	content: attr(data);
+	color: white;
+	text-transform: uppercase;
+	font-size: 0.6em;
+}
+
 /* fonts */
 
 @font-face {
@@ -528,7 +542,7 @@ input[type="button"], input[type="submit"] {
 
 .room-list > .list > .room {
 	height: 2em;
-	padding-left: 1em;
+	padding: 0 1em;
 	background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent) no-repeat;
 	background-position: -240px;
 	border-left: 3px solid transparent;
@@ -569,7 +583,7 @@ input[type="button"], input[type="submit"] {
 
 .member-list > .member {
 	height: 2em;
-	padding-right: 1em;
+	padding: 0 1em;
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent) no-repeat;
 	background-position: 240px;
 	display: flex;
@@ -663,6 +677,10 @@ input[type="button"], input[type="submit"] {
 	display: inline-block;
 	margin-right: 0;
 	margin-left: 0.5em;
+}
+
+.message > .avatar.none {
+	display: inline-flex;
 }
 
 .message.no-author > .author > .title {
