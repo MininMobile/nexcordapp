@@ -1,16 +1,17 @@
 # manex
 The matrix client.
 
+Come discuss Manex with other Manex-headed individuals at [#manex:matrix.org](https://matrix.to/#/!VcucjFBPGgOCxWqUef:matrix.org?via=matrix.org)
+
 ![manex login](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_login.png)
 ![manex chat](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_chat.png)
 
 ## Features
 * [x] send and read messages to and from your rooms
-* [ ] quoting, forwarding, mentions, and room mentions
+* [x] sort rooms into categories
 * [ ] full customizable, support for themes and plugins/extensions
 * [ ] room/member options
 * [ ] create rooms
-* [ ] favorite rooms
 
 ## Running
 Currently, you *could* build manex but since there are rapid updates and the fact that it is in very, very early development means you wouldn't want to use it as your daily driver. But this is how you would run it if you wanted to try it out/help out with development;

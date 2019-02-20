@@ -141,6 +141,14 @@ input[type="button"], input[type="submit"] {
 	display: none !important;
 }
 
+.avatar {
+	width: 1em;
+	height: 1em;
+	background-size: cover;
+	background-position: center;
+	border-radius: 50%;
+}
+
 .avatar.none {
 	background: var(--accent);
 	display: flex;
@@ -154,6 +162,21 @@ input[type="button"], input[type="submit"] {
 	text-transform: uppercase;
 	font-size: 0.6em;
 }
+
+.actions > * {
+	width: 1.4em;
+	height: 1.4em;
+	display: inline-block;
+	background-position: center;
+	background-size: contain;
+	cursor: pointer;
+}
+
+.actions > .settings { background-image: url("img/button/settings.svg"); }
+.actions > .logout   { background-image: url("img/button/logout.svg");   }
+.actions > .minimize { background-image: url("img/button/minimize.svg"); }
+.actions > .maximize { background-image: url("img/button/maximize.svg"); }
+.actions > .close    { background-image: url("img/button/close.svg");    }
 
 /* fonts */
 
@@ -189,19 +212,6 @@ input[type="button"], input[type="submit"] {
 	margin-right: 0.4em;
 	display: flex;
 }
-
-.titlebar > .actions > * {
-	width: 1.4em;
-	height: 1.4em;
-	display: inline-block;
-	background-position: center;
-	background-size: contain;
-	cursor: pointer;
-}
-
-.titlebar > .actions > .minimize { background-image: url("img/button/minimize.svg"); }
-.titlebar > .actions > .maximize { background-image: url("img/button/maximize.svg"); }
-.titlebar > .actions > .close    { background-image: url("img/button/close.svg");    }
 
 /* loading screen */
 
@@ -421,7 +431,10 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .main-menu {
 	height: 2.4em;
+	padding: 0 1em;
 	background: #161616;
+	display: flex;
+	align-items: center;
 }
 
 .wrapper.chat > .content {
@@ -462,6 +475,50 @@ input[type="button"], input[type="submit"] {
 	width: 240px;
 	background: #161616;
 	overflow: auto;
+}
+
+/* main menu */
+
+.room-list-container > .main-menu > .avatar {
+	width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.5em;
+}
+
+.room-list-container > .main-menu > .user-info {
+	flex: 1;
+	font-size: 0.9em;
+	-webkit-user-select: initial;
+}
+
+.room-list-container > .main-menu > .user-info span {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 0.8em;
+}
+
+.room-list-container > .main-menu > .user-info > :last-child {
+	display: block;
+	margin-top: -0.4em;
+}
+
+.room-list-container > .main-menu > .actions {
+	display: flex;
+	align-items: center;
+}
+
+.room-list-container > .main-menu > .actions > * {
+	width: 1em;
+	height: 1em;
+	padding: 0.5em;
+	background-size: 50%;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	opacity: 0.8;
+	transition: background-color 0.2s;
+}
+
+.room-list-container > .main-menu > .actions > *:hover {
+	background-color: rgba(255, 255, 255, 0.08);
 }
 
 /* room menu */
@@ -564,12 +621,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .room-list > .list > .room > .avatar {
-	width: 1em;
-	height: 1em;
 	margin-right: 1em;
-	background-size: cover;
-	background-position: center;
-	border-radius: 50%;
 }
 
 .room-list > .list > .room > span {
@@ -599,12 +651,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .member-list > .member > .avatar {
-	width: 1em;
-	height: 1em;
 	margin-left: 1em;
-	background-size: cover;
-	background-position: center;
-	border-radius: 50%;
 }
 
 .member-list > .member > span {
@@ -624,12 +671,7 @@ input[type="button"], input[type="submit"] {
 }
 
 .message .avatar {
-	width: 1em;
-	height: 1em;
 	margin-right: 0.5em;
-	background-size: cover;
-	background-position: center;
-	border-radius: 50%;
 }
 
 .message-list > .message > .author > .title {
@@ -674,9 +716,9 @@ input[type="button"], input[type="submit"] {
 }
 
 .message > .avatar {
-	display: inline-block;
 	margin-right: 0;
 	margin-left: 0.5em;
+	display: inline-block;
 }
 
 .message > .avatar.none {

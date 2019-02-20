@@ -11,29 +11,35 @@ let client;
 let loadingSplash = document.getElementById("loading-splash");
 let loginWrapper = document.getElementById("login-wrapper");
 let chatWrapper = document.getElementById("chat-wrapper");
+// get dialogs
+let contextContainer = document.getElementById("context-container");
+let contextMenu = document.getElementById("context");
+let dialogContainer = document.getElementById("dialog");
 // get lists
 let roomList = document.getElementById("room-list");
 let messageList = document.getElementById("message-list");
 let memberList = document.getElementById("member-list");
+// get menus
+let roomClose = document.getElementById("room-close");
+let roomTitle = document.getElementById("room-title");
+let mainMenu = document.getElementById("main-menu");
 // get message box
 let messageBoxFormContainer = document.getElementById("messagebox-form-container");
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
-// get other shit
-let contextContainer = document.getElementById("context-container");
-let contextMenu = document.getElementById("context");
-let dialogContainer = document.getElementById("dialog");
-let roomTitle = document.getElementById("room-title");
-let roomClose = document.getElementById("room-close");
 
-// temp data store
-let favoriteRooms = undefined;
-let directRooms = undefined;
-let rooms = undefined;
+// cache
+let favoriteRooms,
+    directRooms,
+    user,
+    rooms;
+
+// temp data
 let currentRoom = undefined;
-let ctrl = false;
-let shift = false;
-let alt = false;
+// key modifiers
+let ctrl = false,
+    shift = false,
+    alt = false;
 
 { // preserve window size
 	let size = JSON.parse(window.localStorage.size || "{}");
@@ -105,10 +111,53 @@ let alt = false;
 			client.once("sync", (state, prevState, data) => {
 				if (state == "PREPARED") {
 					getRooms();
+					getUser();
 					hideLoading();
 				}
 			});
 		});
+	}
+
+	function getUser() {
+		user = client.getUser(client.getUserId());
+
+		mainMenu.innerHTML = "";
+
+		let avatar = getUserAvatar(user);
+			mainMenu.appendChild(avatar);
+
+		{ // user info
+			let container = document.createElement("div");
+				container.classList.add("user-info");
+				mainMenu.appendChild(container);
+
+			let nameContainer = document.createElement("div");
+				container.appendChild(nameContainer);
+
+			let type = document.createElement("span");
+				type.innerText = "@";
+				nameContainer.appendChild(type);
+
+			nameContainer.append(user.userId.split(":")[0].substring("1"));
+
+			let domain = document.createElement("span");
+				domain.innerText = ":matrix.org";
+				container.appendChild(domain);
+		}
+
+		{ // add buttons
+			let container = document.createElement("div");
+				container.classList.add("actions");
+				mainMenu.appendChild(container);
+
+			let settings = document.createElement("div");
+				settings.classList.add("settings");
+				container.appendChild(settings);
+
+			let logout = document.createElement("div");
+				logout.classList.add("logout");
+				container.appendChild(logout);
+		}
 	}
 
 	function getRooms() {
@@ -588,7 +637,9 @@ let alt = false;
 			if (member.getMxcAvatarUrl()) {
 				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
 			}
-		} else {
+		} else if (member.avatarUrl) {
+			avi = client.mxcUrlToHttp(member.avatarUrl);
+		} else if (member.getAvatarFallbackMember) {
 			if (member.getAvatarFallbackMember()) {
 				avi = member.getAvatarFallbackMember().getAvatarUrl().replace("undefined", "https://matrix.org");
 			} else if (ifResource(member.getAvatarUrl().replace("undefined", "https://matrix.org"))) {
@@ -599,8 +650,10 @@ let alt = false;
 		if (avi) {
 			avatar.style.backgroundImage = `url("${avi}")`;
 		} else {
+			let name = member.name || member.displayName;
+
 			avatar.classList.add("none");
-			avatar.setAttribute("data", member.name[0] == "@" ? member.name[1] : member.name[0]);
+			avatar.setAttribute("data", name[0] == "@" ? name[1] : name[0]);
 		}
 
 		return avatar;
