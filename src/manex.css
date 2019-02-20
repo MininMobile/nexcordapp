@@ -264,6 +264,36 @@ input[type="button"], input[type="submit"] {
 	}
 }
 
+/* context menu */
+
+.context-container {
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.001);
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999;
+}
+
+.context-container > .context {
+	padding: 0.5em 0;
+	background: #161616;
+	position: absolute;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5);
+	border-radius: 0.3em;
+}
+
+.context-container > .context > * {
+	padding: 0.1em 1.5em;
+	cursor: default;
+	transition: background 0.2s;
+}
+
+.context-container > .context > *:hover {
+	background: rgba(255, 255, 255, 0.05);
+}
+
 /* dialogs */
 
 .dialog {
@@ -276,6 +306,7 @@ input[type="button"], input[type="submit"] {
 	position: absolute;
 	left: 0;
 	top: 0;
+	z-index: 99;
 	transition: opacity 0.3s;
 }
 

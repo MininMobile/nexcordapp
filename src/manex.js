@@ -20,6 +20,8 @@ let messageBoxFormContainer = document.getElementById("messagebox-form-container
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
 // get other shit
+let contextContainer = document.getElementById("context-container");
+let contextMenu = document.getElementById("context");
 let dialogContainer = document.getElementById("dialog");
 let roomTitle = document.getElementById("room-title");
 let roomClose = document.getElementById("room-close");
@@ -121,7 +123,10 @@ let alt = false;
 				if (e.button == 0) {
 					openRoom(room);
 				} else if (e.button == 2) {
-					toggleDirect(room.roomId);
+					showContext({
+						"Favorite": () => toggleFavorite(room.roomId),
+						"Direct Chat": () => toggleDirect(room.roomId),
+					}, { x: e.clientX, y: e.clientY });
 				}
 			});
 
@@ -148,7 +153,6 @@ let alt = false;
 				if (!favoriteRooms.includes(r.roomId)) return;
 
 				let button = getRoomButton(r);
-	
 				favoriteList.appendChild(button);
 			});
 		}
@@ -166,10 +170,9 @@ let alt = false;
 			roomList.appendChild(directList);
 
 			rooms.forEach((r) => {
-				if (!directRooms.includes(r.roomId)) return;
+				if (!directRooms.includes(r.roomId) || favoriteRooms.includes(r.roomId)) return;
 
 				let button = getRoomButton(r);
-	
 				directList.appendChild(button);
 			});
 		}
@@ -192,7 +195,6 @@ let alt = false;
 						return;
 
 				let button = getRoomButton(r);
-	
 				normalList.appendChild(button);
 			});
 		}
@@ -250,16 +252,16 @@ let alt = false;
 
 						let h = t.getHours();
 						let m = t.getMinutes();
-					
+
 						h = h.toString().length == 1 ? `0${h}` : h;
 						m = m.toString().length == 1 ? `0${m}` : m;
-					
+
 						let month = t.getMonth() + 1;
 						let day = t.getDate();
-					
+
 						month = month.toString().length == 1 ? `0${month}` : month;
 						day = day.toString().length == 1 ? `0${day}` : day;
-					
+
 						timestamp.innerText = `${h}:${m} ${month}/${day}/${t.getFullYear()}`;
 					}
 				}
@@ -294,7 +296,7 @@ let alt = false;
 							let divider = document.createElement("div");
 								divider.classList.add("divider");
 								linkContainer.appendChild(divider);
-		
+
 							let copyLink = document.createElement("span");
 								copyLink.innerText = "Copy Image Link";
 								copyLink.addEventListener("click", () =>
@@ -314,39 +316,39 @@ let alt = false;
 
 					{ // message content
 						let redacted = false;
-	
+
 						if (msg.event.unsigned) {
 							if (msg.event.unsigned.redacted_because) {
 								redacted = true;
 							}
 						}
-	
+
 						if (redacted) {
 							content.classList.add("redacted");
 						} else {
 							let text = "";
-	
+
 							switch (msg.event.type) {
 								case "m.room.message": {
 									text = msg.event.content.body;
 								} break;
-		
+
 								case "m.room.member": {
 									message.classList.add("no-author");
-		
+
 									switch (msg.event.content.membership) {
 										case "join": {
 											text = `${msg.sender.name} has joined the room.`;
 										} break;
-	
+
 										case "invite": {
 											text = `${msg.sender.name} invited ${msg.target.name}.`;
 										} break;
-		
+
 										case "leave": {
 											if (msg.sender != msg.target) {
 												text = `${msg.sender.name} kicked ${msg.target.name}.`;
-		
+
 												if (msg.event.content.reason)
 													text += ` Reason: ${msg.event.content.reason}`;
 											} else {
@@ -355,23 +357,23 @@ let alt = false;
 										} break;
 									}
 								} break;
-		
+
 								case "m.room.topic": {
 									message.classList.add("no-author");
-		
+
 									text = `${msg.sender.name} set the topic to "${msg.event.content.topic}".`;
 								} break;
-	
+
 								default: {
 									supportedEvent = false;
 								} break;
 							}
-	
+
 							content.innerHTML = escapeHtml(text);
 						}
 					}
 				}
-	
+
 				if (message.classList.contains("no-author")) {
 					message.appendChild(avatar);
 
@@ -510,6 +512,12 @@ let alt = false;
 		}
 	});
 
+	contextContainer.addEventListener("mouseup", (e) => {
+		if (e.target == contextContainer) {
+			hideContext();
+		}
+	});
+
 	messageBoxForm.addEventListener("submit", () => {
 		if (!currentRoom) return;
 		if (!currentRoom.roomId) return;
@@ -576,10 +584,10 @@ let alt = false;
 			});
 
 			directRooms = dr;
-			window.localStorage.favorites = JSON.stringify(directRooms);
+			window.localStorage.directs = JSON.stringify(directRooms);
 		} else {
 			directRooms.push(roomId);
-			window.localStorage.favorites = JSON.stringify(directRooms);
+			window.localStorage.directs = JSON.stringify(directRooms);
 		}
 
 		getRooms();
@@ -598,6 +606,31 @@ let alt = false;
 			b.classList.add("maximized");
 			win.maximize();
 		}
+	}
+
+	function showContext(menu, position = { x: 0, y: 0 }) {
+		contextMenu.innerHTML = "";
+
+		contextContainer.classList.remove("hidden");
+
+		contextMenu.style.left = position.x + "px";
+		contextMenu.style.top = position.y + "px";
+
+		Object.keys(menu).forEach((action) => {
+			let item = document.createElement("div");
+			item.innerText = action;
+
+			item.addEventListener("click", () => {
+				menu[action]();
+			})
+
+			contextMenu.appendChild(item);
+		});
+	}
+
+	function hideContext() {
+		contextContainer.classList.add("hidden");
+		contextMenu.innerHTML = "";
 	}
 
 	function showDialog(content) {
