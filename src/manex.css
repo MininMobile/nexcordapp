@@ -205,39 +205,20 @@ input[type="button"], input[type="submit"] {
 	transition: opacity 0.3s;
 }
 
-
-.splash::before, .splash::after {
-	filter: blur(0.5em);
-}
-
 .splash::before {
 	content: "";
 	width: 100vw;
-	height: 50vh;
-	background-image: url(img/logo/manexThin.png);
+	height: 100vh;
+	background-image: url(img/loading.png);
 	background-size: 50%;
-	background-position: 55% -30%;
+	background-position: center;
 	background-repeat: no-repeat;
 	display: block;
 	position: absolute;
 	left: 0;
 	top: 0;
 	opacity: 0.2;
-}
-
-.splash::after {
-	content: "";
-	width: 100vw;
-	height: 50vh;
-	background-image: url(img/logo/manexThin.png);
-	background-size: 50%;
-	background-position: 45% 123.5%;
-	background-repeat: no-repeat;
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 50vh;
-	opacity: 0.2;
+	filter: blur(0.5em);
 }
 
 .splash > .logo {
