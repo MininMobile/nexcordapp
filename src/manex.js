@@ -114,10 +114,13 @@ let alt = false;
 	function getRooms() {
 		let getRoomButton = (room) => {
 			let button = document.createElement("div");
-			button.classList.add("room");
-			button.id = room.roomId;
-			button.title = room.name;
-			button.innerText = room.name;
+				button.classList.add("room");
+				button.id = room.roomId;
+				button.title = room.name;
+
+			let text = document.createElement("span");
+				text.innerText = room.name;
+				button.appendChild(text);
 
 			button.addEventListener("mouseup", (e) => {
 				if (e.button == 0) {

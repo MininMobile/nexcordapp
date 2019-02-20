@@ -462,11 +462,11 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .room-menu > .room-title {
 	height: 2.4em;
-	padding-left: 0.5em;
-	display: flex;
-	align-items: center;
+	padding: 0 0.5em;
 	flex: 1;
 	cursor: pointer;
+	line-height: 2.4em;
+	vertical-align: middle;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -489,6 +489,7 @@ input[type="button"], input[type="submit"] {
 	padding: 0 0.3em;
 	padding-bottom: 0.3em;
 	margin: 0 0.5em;
+	margin-bottom: 0.5em;
 	color: rgba(255, 255, 255, 0.65);
 	display: flex;
 	align-items: center;
@@ -517,39 +518,42 @@ input[type="button"], input[type="submit"] {
 	transform: rotate(90deg);
 }
 
+.room-list > .list {
+	margin-bottom: 0.5em;
+}
+
 .room-list > .list.hidden {
-	height: 0;
+	display: none;
 }
 
 .room-list > .list > .room {
-	background: rgba(0, 0, 0, 0.2);
-	padding: 0.25em 0.5em;
-	margin: 0.5em 1em;
+	height: 2em;
+	padding-left: 1em;
+	background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent) no-repeat;
+	background-position: -240px;
+	border-left: 3px solid transparent;
+	display: flex;
+	align-items: center;
 	font-size: 0.9em;
 	cursor: pointer;
+	transition: background-position 0.2s, border-left 0.2s;
+}
+
+.room-list > .list > .room > span {
+	flex: 1;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	border-radius: 0.2em;
 }
 
-.room-list > .list > .room::before {
-	content: "";
-	width: 0.3em;
-	height: 0.3em;
-	margin-top: 0.5em;
-	background: var(--accent);
-	position: absolute;
-	left: 0.35em;
-	opacity: 0;
-	border-radius: 0.15em;
-	transition: height 0.3s, margin-top 0.3s, opacity 0.3s;
+.room-list > .list > .room:hover  {
+	border-left: 3px solid var(--accent);
+	background-position: 0;
 }
 
-.room-list > .list > .room.selected::before {
-	margin-top: -0.2em;
-	height: 1.6em;
-	opacity: 1;
+.room-list > .list > .room.selected {
+	border-left: 6px solid var(--accent);
+	background-position: 0;
 }
 
 /* member list */
