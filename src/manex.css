@@ -489,8 +489,32 @@ input[type="button"], input[type="submit"] {
 	padding: 0 0.3em;
 	padding-bottom: 0.3em;
 	margin: 0 0.5em;
+	color: rgba(255, 255, 255, 0.65);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	font-size: 0.9em;
 	cursor: pointer;
+}
+
+.room-list > .category.hidden {
+	opacity: 1;
+	pointer-events: initial;
+}
+
+.room-list > .category::after {
+	content: "";
+	width: 1em;
+	height: 1em;
+	display: block;
+	opacity: 0.65;
+	background: url("img/button/dropdown.svg") center / contain;
+	transition: transform 0.3s;
+}
+
+.room-list > .category.hidden::after {
+	transform: rotate(90deg);
 }
 
 .room-list > .list.hidden {

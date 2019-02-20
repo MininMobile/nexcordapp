@@ -143,7 +143,10 @@ let alt = false;
 
 			favoriteTitle.classList.add("category");
 			favoriteTitle.innerText = "Favorites";
-			favoriteTitle.addEventListener("click", () => favoriteList.classList.toggle("hidden"));
+			favoriteTitle.addEventListener("click", () => {
+				favoriteTitle.classList.toggle("hidden");
+				favoriteList.classList.toggle("hidden");
+			});
 			roomList.appendChild(favoriteTitle);
 
 			favoriteList.classList.add("list");
@@ -163,7 +166,10 @@ let alt = false;
 
 			directTitle.classList.add("category");
 			directTitle.innerText = "People";
-			directTitle.addEventListener("click", () => directList.classList.toggle("hidden"));
+			directTitle.addEventListener("click", () => {
+				directTitle.classList.toggle("hidden");
+				directList.classList.toggle("hidden");
+			});
 			roomList.appendChild(directTitle);
 
 			directList.classList.add("list");
@@ -183,7 +189,10 @@ let alt = false;
 
 			normalTitle.classList.add("category");
 			normalTitle.innerText = "Rooms";
-			normalTitle.addEventListener("click", () => normalList.classList.toggle("hidden"));
+			normalTitle.addEventListener("click", () => {
+				normalTitle.classList.toggle("hidden");
+				normalList.classList.toggle("hidden");
+			});
 			roomList.appendChild(normalTitle);
 
 			normalList.classList.add("list");
