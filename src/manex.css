@@ -2,6 +2,24 @@
 	--accent: #673ab7;
 }
 
+::-webkit-scrollbar {
+	width: 1em;
+}
+
+::-webkit-scrollbar-thumb {
+	width: 0.5em;
+	background-color: rgba(255, 255, 255, 0.1);
+	background-clip: padding-box;
+	border: 0.5em solid transparent;
+	border-left: none;
+}
+
+::-webkit-scrollbar-button {
+	width: 0;
+	height: 0;
+	display: none;
+}
+
 html, body {
 	width: 100vw;
 	height: 100vh;

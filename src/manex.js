@@ -1,6 +1,5 @@
 const matrix = require("matrix-js-sdk");
 const open = require("open");
-const fs = require("fs");
 const remote = require("electron").remote;
 const { clipboard, dialog } = remote;
 
