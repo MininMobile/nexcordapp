@@ -121,7 +121,7 @@ let alt = false;
 				if (e.button == 0) {
 					openRoom(room);
 				} else if (e.button == 2) {
-					toggleFavorite(room.roomId);
+					toggleDirect(room.roomId);
 				}
 			});
 
@@ -561,6 +561,25 @@ let alt = false;
 		} else {
 			favoriteRooms.push(roomId);
 			window.localStorage.favorites = JSON.stringify(favoriteRooms);
+		}
+
+		getRooms();
+	}
+
+	function toggleDirect(roomId) {
+		if (directRooms.includes(roomId)) {
+			let dr = [];
+
+			directRooms.forEach((r) => {
+				if (r != roomId)
+					dr.push(r);
+			});
+
+			directRooms = dr;
+			window.localStorage.favorites = JSON.stringify(directRooms);
+		} else {
+			directRooms.push(roomId);
+			window.localStorage.favorites = JSON.stringify(directRooms);
 		}
 
 		getRooms();
