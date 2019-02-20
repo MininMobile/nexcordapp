@@ -118,6 +118,12 @@ let alt = false;
 				button.id = room.roomId;
 				button.title = room.name;
 
+			let avatar = document.createElement("div");
+				avatar.classList.add("avatar");
+				avatar.style.backgroundImage = "url('" +
+					room.getAvatarUrl().replace("undefined", "https://matrix.org") + "')";
+				button.appendChild(avatar);
+
 			let text = document.createElement("span");
 				text.innerText = room.name;
 				button.appendChild(text);
