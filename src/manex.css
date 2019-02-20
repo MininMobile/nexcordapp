@@ -287,11 +287,25 @@ input[type="button"], input[type="submit"] {
 }
 
 .dialog .image-preview-link {
-	color: #ccc !important;
-	display: block;
+	padding: 0.5em;
+	color: #ccc;
+	display: flex;
+	align-items: center;
 	font-size: 0.9em;
+}
+
+.dialog .image-preview-link span {
+	color: var(--accent);
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+.dialog .image-preview-link .divider {
+	width: 1px;
+	height: 1.1em;
+	margin: 0 0.3em;
+	background: rgba(255, 255, 255, 0.2);
+	display: inline-block;
 }
 
 /* login layout */
@@ -517,6 +531,7 @@ input[type="button"], input[type="submit"] {
 .message-list > .message > img.content {
 	max-width: 50%;
 	max-height: 50vh;
+	margin-top: 0.3em;
 	cursor: pointer;
 }
 

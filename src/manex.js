@@ -1,6 +1,8 @@
 const matrix = require("matrix-js-sdk");
 const open = require("open");
+const fs = require("fs");
 const remote = require("electron").remote;
+const { clipboard, dialog } = remote;
 
 const win = remote.getCurrentWindow();
 
@@ -192,14 +194,33 @@ let alt = false;
 							image.src = client.mxcUrlToHttp(msg.event.content.url);
 							container.appendChild(image);
 
-						let link = document.createElement("div");
-							link.classList.add("image-preview-link");
-							link.innerText = "Open Original";
-							link.addEventListener("click", () =>
-								open(client.mxcUrlToHttp(msg.event.content.url)));
-							container.appendChild(link);
+						let linkContainer = document.createElement("div");
+							linkContainer.classList.add("image-preview-link");
+							container.appendChild(linkContainer);
+
+						{ // links
+							let openLink = document.createElement("span");
+								openLink.innerText = "Open Original";
+								openLink.addEventListener("click", () =>
+									open(client.mxcUrlToHttp(msg.event.content.url)));
+								linkContainer.appendChild(openLink);
+
+							let divider = document.createElement("div");
+								divider.classList.add("divider");
+								linkContainer.appendChild(divider);
+		
+							let copyLink = document.createElement("span");
+								copyLink.innerText = "Copy Image Link";
+								copyLink.addEventListener("click", () =>
+									clipboard.writeText(client.mxcUrlToHttp(msg.event.content.url)));
+								linkContainer.appendChild(copyLink);
+						}
 
 						showDialog(container);
+					});
+
+					content.addEventListener("load", () => {
+						messageList.scrollTop = messageList.scrollHeight;
 					});
 				} else {
 					content = document.createElement("div");
