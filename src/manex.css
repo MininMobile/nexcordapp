@@ -38,36 +38,31 @@ h1, h2, h3, h4, h5, h6, p {
 	font-weight: normal;
 }
 
-input {
+input, textarea, select {
 	margin: 0.5em 0;
-	border: none !important;
-	outline: none !important;
+	border: none;
+	outline: none;
 	-webkit-appearance: none;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], textarea {
 	height: 1.4em;
 	padding: 0.25em 0.75em;
+	margin: calc(0.5em + 5px) 5px;
 	background-color: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.5);
 	color: rgba(255, 255, 255, 0.75);
+	font-family: Arimo;
+	transition: margin 0.1s, border 0.1s;
 }
 
-input[type="text"] + div, input[type="password"] + div {
-	content: "";
-	width: 0;
-	height: 2px;
-	background: white;
-	display: block;
-	position: relative;
-	left: 100%;
-	bottom: 0.5em;
-	transition: width 0.2s, left 0.2s;
+textarea {
+	resize: none;
 }
 
-input[type="text"]:focus + div, input[type="password"]:focus + div {
-	width: 100%;
-	left: 0;
-	animation: slide-in 0.2s;
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+	margin: 0.5em 0 !important;
+	border: 6px solid white;
 }
 
 input[type="button"], input[type="submit"] {
@@ -77,6 +72,44 @@ input[type="button"], input[type="submit"] {
 	color: rgba(255, 255, 255, 0.75);
 	cursor: pointer;
 	border-radius: 1.05em;
+}
+
+.checkbox-container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+input[type="checkbox"] {
+	height: 1.4em;
+	width: 2.4em;
+	padding: 0 0.2em;
+	background: rgba(0, 0, 0, 0.5);
+	color: #ddd;
+	position: relative;
+	left: 0.55em;
+	cursor: pointer;
+	border-radius: 0.7em;
+}
+
+input[type="checkbox"] + .handle {
+	width: 0.8em;
+	height: 0.8em;
+	background: rgba(255, 255, 255, 0.1);
+	display: inline-block;
+	position: relative;
+	right: 1.45em;
+	border-radius: 50%;
+	pointer-events: none;
+	transition: right 0.3s, background 0.2s;
+}
+
+input[type="checkbox"]:hover + .handle {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+input[type="checkbox"]:checked + .handle {
+	right: 0.55em;
 }
 
 /* select { */
@@ -134,6 +167,10 @@ input[type="button"], input[type="submit"] {
 
 .hidden {
 	opacity: 0;
+	pointer-events: none;
+}
+
+.immortal {
 	pointer-events: none;
 }
 
@@ -463,7 +500,8 @@ input[type="button"], input[type="submit"] {
 
 .room-list-container > .main-menu {
 	height: 2.4em;
-	padding: 0 1em;
+	padding-left: 0.4em;
+	padding-right: 0.1em;
 	background: #161616;
 	display: flex;
 	align-items: center;
@@ -475,11 +513,11 @@ input[type="button"], input[type="submit"] {
 	flex: 1;
 }
 
-.content > .titlebar {
+.wrapper.chat > .content > .titlebar {
 	background: #161616;
 }
 
-.content > .content-divider {
+.wrapper.chat > .content > .content-divider {
 	display: flex;
 	flex: 1;
 }
@@ -556,7 +594,7 @@ input[type="button"], input[type="submit"] {
 .room-list-container > .main-menu > .actions > * {
 	width: 1em;
 	height: 1em;
-	padding: 0.5em;
+	padding: 0.4em;
 	background-size: 50%;
 	background-repeat: no-repeat;
 	border-radius: 50%;
@@ -794,4 +832,61 @@ input[type="button"], input[type="submit"] {
 	padding: 0 1em;
 	margin: 0;
 	flex: 1;
+}
+
+/* settings */
+
+.message-list.flex {
+	padding: 0;
+	display: flex;
+}
+
+.category-container {
+	width: 240px;
+	background: #161616;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5);
+}
+
+.options-wrapper {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	overflow: auto;
+}
+
+.options-container {
+	padding: 1em 0;
+	width: 80%;
+	max-width: 480px;
+}
+
+.options-container > .input-container {
+	padding: 0.75em;
+	width: 100%;
+	display: flex;
+}
+
+.options-container textarea {
+	height: 5em !important;
+	display: block;
+}
+
+.options-container > .input-container > .title {
+	flex: 1;
+}
+
+.options-container > .input-container > .title > :last-child {
+	margin-top: -0.2em;
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 0.8em;
+}
+
+.options-container > .input-container > .checkbox-container {
+	width: initial;
+}
+
+.options-container > .input-container > input[type="text"],
+.options-container > .input-container > input[type="password"],
+.options-container > .input-container > textarea {
+	width: 12em;
 }

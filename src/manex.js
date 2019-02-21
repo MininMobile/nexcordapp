@@ -152,6 +152,25 @@ let ctrl = false,
 
 			let settings = document.createElement("div");
 				settings.classList.add("settings");
+				settings.addEventListener("click", () => {
+					openSettings([
+						{ title: "Profile", options: [
+							{ type: "switch", name: "Enable Option", description: "Enable this option to accomplish nothing.",
+								value: false, onchange: console.log },
+							{ type: "text", name: "Write Text", description: "This text is very unimportant.",
+								placeholder: "smol text", onchange: console.log },
+							{ type: "bigtext", name: "Holy Shit this is Massive", description: "Woah this must be important cause it's big.",
+								placeholder: "biggo text", onchange: console.log },
+							{ type: "dropdown", name: "How Big your PP", description: "Tell this dropdown the size of your schlong.",
+								value: 2, values: ["cheeto", "average", "long", "massive", "chad"], onchange: console.log },
+						] },
+						{ title: "Appearance", options: [] },
+						{ title: "Behavior", options: [] },
+						{ title: "General", options: [] },
+						{ title: "Security + Privacy", options: [] },
+						{ title: "Help + About", options: [] },
+					]);
+				});
 				container.appendChild(settings);
 
 			let logoutButton = document.createElement("div");
@@ -294,6 +313,8 @@ let ctrl = false,
 		}
 
 		{ // get timeline
+			messageList.classList.remove("flex");
+
 			messageList.innerHTML = "";
 
 			room.timeline.forEach((msg) => {
@@ -478,6 +499,7 @@ let ctrl = false,
 
 		// update room menu
 		roomClose.classList.remove("disabled");
+		roomTitle.classList.remove("immortal");
 		roomTitle.innerText = room.name;
 
 		// scroll to bottom
@@ -499,12 +521,14 @@ let ctrl = false,
 		memberList.classList.add("disabled");
 
 		// clear lists
+		messageList.classList.add("flex");
 		messageList.innerHTML = "";
 		memberList.innerHTML = "";
 
 		// update room menu
-		roomTitle.innerText = "Manex";
 		roomClose.classList.add("disabled");
+		roomTitle.classList.remove("immortal");
+		roomTitle.innerText = "Manex";
 	}
 
 	function logout() {
@@ -759,6 +783,113 @@ let ctrl = false,
 		}
 
 		return container;
+	}
+
+	function openSettings(settings) {
+		closeRoom();
+
+		roomClose.classList.remove("disabled");
+		roomTitle.classList.add("immortal");
+
+		let categoryContainer = document.createElement("div");
+			categoryContainer.classList.add("category-container");
+			messageList.appendChild(categoryContainer);
+
+		let optionsWrapper = document.createElement("div");
+			optionsWrapper.classList.add("options-wrapper");
+			messageList.appendChild(optionsWrapper);
+
+		let optionsContainer = document.createElement("div");
+			optionsContainer.classList.add("options-container");
+			optionsWrapper.appendChild(optionsContainer);
+
+		settings.forEach((category) => {
+			category.options.forEach((setting) => {
+				switch (setting.type) {
+					case "switch": {
+						let container = document.createElement("div");
+							container.classList.add("input-container");
+							optionsContainer.appendChild(container);
+
+						let titleContainer = document.createElement("div");
+							titleContainer.classList.add("title");
+							container.appendChild(titleContainer);
+
+						let title = document.createElement("div");
+							title.innerText = setting.name;
+							titleContainer.appendChild(title);
+
+						let subtitle = document.createElement("div");
+							subtitle.innerText = setting.description;
+							titleContainer.appendChild(subtitle);
+
+						let switchContainer = document.createElement("div");
+							switchContainer.classList.add("checkbox-container");
+							container.appendChild(switchContainer);
+
+						let input = document.createElement("input");
+							input.type = "checkbox";
+							input.checked = setting.value;
+							switchContainer.appendChild(input);
+
+						let handle = document.createElement("span");
+							handle.classList.add("handle");
+							switchContainer.appendChild(handle);
+					} break;
+
+					case "text": {
+						let container = document.createElement("div");
+							container.classList.add("input-container");
+							optionsContainer.appendChild(container);
+
+						let titleContainer = document.createElement("div");
+							titleContainer.classList.add("title");
+							container.appendChild(titleContainer);
+
+						let title = document.createElement("div");
+							title.innerText = setting.name;
+							titleContainer.appendChild(title);
+
+						let subtitle = document.createElement("div");
+							subtitle.innerText = setting.description;
+							titleContainer.appendChild(subtitle);
+
+						let input = document.createElement("input");
+							input.type = "text";
+							input.placeholder = setting.placeholder || "";
+							input.value = setting.value || "";
+							container.appendChild(input);
+					} break;
+
+					case "bigtext": {
+						let container = document.createElement("div");
+							container.classList.add("input-container");
+							optionsContainer.appendChild(container);
+
+						let titleContainer = document.createElement("div");
+							titleContainer.classList.add("title");
+							container.appendChild(titleContainer);
+
+						let title = document.createElement("div");
+							title.innerText = setting.name;
+							titleContainer.appendChild(title);
+
+						let subtitle = document.createElement("div");
+							subtitle.innerText = setting.description;
+							titleContainer.appendChild(subtitle);
+
+						let input = document.createElement("textarea");
+							input.placeholder = setting.placeholder || "";
+							input.value = setting.value || "";
+							container.appendChild(input);
+					} break;
+	
+					default: {
+						console.error("Attempted to create a new setting with invalid type.");
+					} break;
+				}
+			});
+		});
 	}
 
 	function showContext(menu, position = { x: 0, y: 0 }) {
