@@ -830,6 +830,7 @@ let ctrl = false,
 						let input = document.createElement("input");
 							input.type = "checkbox";
 							input.checked = setting.value;
+							input.addEventListener("change", setting.onchange);
 							switchContainer.appendChild(input);
 
 						let handle = document.createElement("span");
@@ -858,6 +859,7 @@ let ctrl = false,
 							input.type = "text";
 							input.placeholder = setting.placeholder || "";
 							input.value = setting.value || "";
+							input.addEventListener("change", setting.onchange);
 							container.appendChild(input);
 					} break;
 
@@ -881,6 +883,31 @@ let ctrl = false,
 						let input = document.createElement("textarea");
 							input.placeholder = setting.placeholder || "";
 							input.value = setting.value || "";
+							input.addEventListener("change", setting.onchange);
+							container.appendChild(input);
+					} break;
+
+					case "dropdown": {
+						let container = document.createElement("div");
+							container.classList.add("input-container");
+							optionsContainer.appendChild(container);
+
+						let titleContainer = document.createElement("div");
+							titleContainer.classList.add("title");
+							container.appendChild(titleContainer);
+
+						let title = document.createElement("div");
+							title.innerText = setting.name;
+							titleContainer.appendChild(title);
+
+						let subtitle = document.createElement("div");
+							subtitle.innerText = setting.description;
+							titleContainer.appendChild(subtitle);
+
+						let input = document.createElement("select");
+							setting.values.forEach((v, i) =>
+								input.options.add(new Option(v, i, false, i == (setting.value || 0))));
+							input.addEventListener("change", setting.onchange);
 							container.appendChild(input);
 					} break;
 	
