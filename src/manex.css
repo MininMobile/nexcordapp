@@ -129,7 +129,7 @@ select {
 	border: 1px solid rgba(255, 255, 255, 0.5);
 	color: rgba(255, 255, 255, 0.75);
 	font-family: Arimo;
-	transition: margin 0.3s, border 0.3s;
+	transition: border 0.3s;
 }
 
 select:focus {
@@ -471,6 +471,43 @@ select:focus {
 	display: flex;
 	justify-items: center;
 	flex-direction: column;
+}
+
+.wrapper.login input[type="text"],
+.wrapper.login input[type="password"] {
+	height: 1.4em !important;
+	padding: 0.25em 0.75em !important;
+	margin: 0.5em 0 !important;
+	background-color: transparent !important;
+	color: rgba(255, 255, 255, 0.75) !important;
+	border: none !important;
+	font-family: Arimo !important;
+	transition: none !important;
+}
+
+.wrapper.login input[type="text"]:focus,
+.wrapper.login input[type="password"]:focus {
+	border: none !important;
+}
+
+.wrapper.login input[type="text"] + div,
+.wrapper.login input[type="password"] + div {
+	content: "";
+	width: 0;
+	height: 2px;
+	background: white;
+	display: block;
+	position: relative;
+	left: 100%;
+	bottom: 0.5em;
+	transition: width 0.2s, left 0.2s;
+}
+
+.wrapper.login input[type="text"]:focus + div,
+.wrapper.login input[type="password"]:focus + div {
+	width: 100%;
+	left: 0;
+	animation: slide-in 0.2s;
 }
 
 /* chat layout */
@@ -852,6 +889,23 @@ select:focus {
 	width: 240px;
 	background: #161616;
 	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5);
+	overflow: auto;
+}
+
+.category-container > .category {
+	padding: 0.3em 0.6em;
+	margin: 0.5em 1em;
+	cursor: pointer;
+	border-radius: 0.2em;
+	transition: background 0.2s;
+}
+
+.category-container > .category:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.category-container > .category.selected {
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .options-wrapper {
