@@ -1,6 +1,7 @@
+const path = require("path");
+const url = require("url");
+const manex = require("./src/lib/app");
 const { app, BrowserWindow } = require("electron");
-const path = require("path"),
-	  url = require("url");
 
 let win;
 
@@ -10,7 +11,7 @@ function createWindow() {
 		minWidth: 800,
 		minHeight: 600,
 		resizable: true,
-		title: "Manex",
+		title: manex.name,
 		backgroundColor: "#212121",
 		frame: false
 	});

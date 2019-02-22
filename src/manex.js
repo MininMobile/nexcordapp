@@ -1,5 +1,6 @@
 const matrix = require("matrix-js-sdk");
 const open = require("open");
+const app = require("./lib/app");
 const remote = require("electron").remote;
 const { clipboard, dialog } = remote;
 
@@ -168,7 +169,51 @@ let ctrl = false,
 						{ name: "Behavior", options: [] },
 						{ name: "General", options: [] },
 						{ name: "Security + Privacy", options: [] },
-						{ name: "Help + About", options: [] },
+						{ name: "Help + About", options: [
+							{ type: "html", content: (() => {
+								let container = document.createElement("div");
+									container.classList.add("about-container");
+
+								let logo = document.createElement("div");
+									logo.classList.add("logo");
+									container.appendChild(logo);
+
+								let title = document.createElement("div");
+									title.classList.add("title");
+									title.innerText = app.name;
+									container.appendChild(title);
+
+								let subtitle = document.createElement("div");
+									subtitle.classList.add("subtitle");
+									subtitle.innerText = "Version " + app.version;
+									container.appendChild(subtitle);
+
+								let contributors = document.createElement("div");
+									contributors.classList.add("contributors");
+									container.appendChild(contributors);
+
+								app.contributors.forEach((c) => {
+									let contributor = document.createElement("div");
+										contributor.classList.add("contributor");
+										contributors.appendChild(contributor);
+
+									let name = document.createElement("div");
+										name.innerText = c.name;
+										contributor.appendChild(name);
+
+									let jobtitle = document.createElement("div");
+										jobtitle.innerText = c.title;
+										contributor.appendChild(jobtitle);
+
+									if (c.link) {
+										name.classList.add("link");
+										name.addEventListener("click", () => open(c.link));
+									}
+								});
+
+								return container;
+							})() }
+						] },
 					]);
 				});
 				container.appendChild(settings);
@@ -528,7 +573,7 @@ let ctrl = false,
 		// update room menu
 		roomClose.classList.add("disabled");
 		roomTitle.classList.remove("immortal");
-		roomTitle.innerText = "Manex";
+		roomTitle.innerText = app.name;
 	}
 
 	function logout() {
@@ -922,6 +967,10 @@ let ctrl = false,
 									input.options.add(new Option(v, i, false, i == (setting.value || 0))));
 								input.addEventListener("change", setting.onchange);
 								container.appendChild(input);
+						} break;
+
+						case "html": {
+							optionsContainer.appendChild(setting.content);
 						} break;
 		
 						default: {

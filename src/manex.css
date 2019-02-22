@@ -20,6 +20,25 @@
 	display: none;
 }
 
+/* fonts */
+
+@font-face {
+	font-family: Arimo;
+	src: url(./font/Arimo-Regular.woff);
+}
+
+@font-face {
+	font-family: FiraMono;
+	src: url(./font/FiraMono-Regular.otf);
+}
+
+@font-face {
+	font-family: Righteous;
+	src: url(./font/Righteous-Regular.ttf);
+}
+
+/* elements */
+
 html, body {
 	width: 100vw;
 	height: 100vh;
@@ -182,6 +201,11 @@ select:focus {
 	display: none !important;
 }
 
+.link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 .button {
 	padding: 0.6em 0.7em;
 	margin-left: 0.8em;
@@ -232,18 +256,6 @@ select:focus {
 .actions > .minimize { background-image: url("img/button/minimize.svg"); }
 .actions > .maximize { background-image: url("img/button/maximize.svg"); }
 .actions > .close    { background-image: url("img/button/close.svg");    }
-
-/* fonts */
-
-@font-face {
-	font-family: Arimo;
-	src: url(./font/Arimo-Regular.woff);
-}
-
-@font-face {
-	font-family: FiraMono;
-	src: url(./font/FiraMono-Regular.otf);
-}
 
 /* titlebar */
 
@@ -883,6 +895,7 @@ select:focus {
 .message-list.flex {
 	padding: 0;
 	display: flex;
+	-webkit-user-select: none;
 }
 
 .category-container {
@@ -938,6 +951,7 @@ select:focus {
 	justify-content: center;
 	flex-direction: column;
 	text-align: left;
+	cursor: default;
 }
 
 .options-container > .input-container > .title > :last-child {
@@ -958,4 +972,66 @@ select:focus {
 
 .options-container > .input-container > select {
 	width: 13.6em;
+}
+
+/* about page */
+
+.options-container .about-container {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	pointer: default;
+}
+
+.options-container .about-container .logo {
+	width: 15em;
+	height: 11em;
+	background: url("img/logo/manexThick.png") center / cover;
+}
+
+.options-container .about-container .title {
+	margin-top: -0.2em;
+	color: white;
+	font-family: Righteous;
+	font-size: 4em;
+	letter-spacing: -0.02em;
+	text-transform: lowercase;
+}
+
+.options-container .about-container .subtitle {
+	margin-top: -0.5em;
+	color: rgba(255, 255, 255, 0.65);
+	font-family: Righteous;
+	font-size: 1.2em;
+	letter-spacing: -0.02em;
+	text-transform: lowercase;
+}
+
+.options-container .about-container .contributors {
+	margin-top: 0.7em;
+	width: 100%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: auto;
+}
+
+.options-container .about-container .contributor {
+	padding: 0.7em 1em;
+	margin: 1em 0.5em;
+	background: #161616;
+	border-radius: 0.5em;
+	display: inline-block;
+	text-align: center;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.5);
+}
+
+.options-container .about-container .contributor :first-child {
+	font-size: 1.1em;
+}
+
+.options-container .about-container .contributor :last-child {
+	font-size: 0.9em;
+	color: rgba(255, 255, 255, 0.5);
 }

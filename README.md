@@ -4,6 +4,7 @@ The matrix client.
 Come discuss Manex with other Manex-headed individuals at [#manex:matrix.org](https://matrix.to/#/#manex:matrix.org)
 
 ![manex login](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_login.png)
+![loading](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_loading.png)
 ![manex chat](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_chat.png)
 
 ## Features
