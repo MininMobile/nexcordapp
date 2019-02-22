@@ -834,14 +834,21 @@ select:focus {
 	cursor: pointer;
 }
 
-.message-list > .message > .content.redacted::before {
-	content: "REDACTED";
+.message-list > .message > .content.redacted {
 	width: 240px;
-	padding: 0.2em;
-	background: black;
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+.message-list > .message > .content.redacted::before {
+	content: "";
+	width: 250px;
+	height: 1.6em;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24">\
+  <rect fill="rgba(0, 0, 0, 0.2)" width="8" height="24"></rect>\
+</svg>') left / contain;
 	display: block;
-	text-align: center;
-	font-size: 0.9em;
+	transform: skew(-45deg);
 }
 
 .message-list > .message + .message::before {
@@ -982,7 +989,7 @@ select:focus {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	pointer: default;
+	cursor: default;
 }
 
 .options-container .about-container .logo {

@@ -10,7 +10,7 @@ Come discuss Manex with other Manex-headed individuals at [#manex:matrix.org](ht
 ## Features
 * [x] send and read messages to and from your rooms
 * [x] sort rooms into categories
-* [ ] full customizable, support for themes and plugins/extensions
+* [ ] fully customizable, support for themes and plugins/extensions
 * [ ] room/member options
 * [ ] create rooms
 
@@ -35,3 +35,18 @@ npm i electron -g
 # since you are in the manex repo it will start manex
 electron .
 ```
+
+## Credits
+### Images
+- Feather ([feathericons.com](https://feathericons.com/))
+- Login Image ([unsplash.com](https://unsplash.com/photos/xrzHZfJ7lxQ)) (modified)
+
+### Fonts
+- Arimo ([font.google.com](https://fonts.google.com/specimen/Arimo/))
+- Fira Mono ([font.google.com](https://fonts.google.com/specimen/Fira+Mono/))
+- Righteous ([font.google.com](https://fonts.google.com/specimen/Righteous))
+
+### Dependencies
+- Electron ([npmjs.com](https://www.npmjs.com/package/electron))
+- Matrix JS SDK ([npmjs.com](https://www.npmjs.com/package/matrix-js-sdk))
+- Node Open ([npmjs.com](https://www.npmjs.com/package/open))
