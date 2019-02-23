@@ -1,10 +1,9 @@
 const remote = require("electron").remote;
-const markdownit = require("markdown-it");
+const md = require("markdown-it")({ linkify: true, typographer: true });
 const matrix = require("matrix-js-sdk");
 const open = require("open");
 const app = require("./lib/app");
 const { clipboard, dialog } = remote;
-const md = new markdownit();
 
 const win = remote.getCurrentWindow();
 
@@ -726,6 +725,14 @@ let ctrl = false,
 			case "Escape": if (shift) closeRoom(); break;
 		}
 	});
+
+	document.addEventListener("click", (e) => {
+		if (e.target.tagName.toLowerCase() == "a" &&
+			e.target.href.toLowerCase().startsWith("http")) {
+				e.preventDefault();
+				open(e.target.href);
+			}
+	})
 
 	roomClose.addEventListener("click", closeRoom);
 
