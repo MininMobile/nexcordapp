@@ -57,6 +57,14 @@ h1, h2, h3, h4, h5, h6, p {
 	font-weight: normal;
 }
 
+hr {
+	width: 80%;
+	height: 1px;
+	margin: 0.3em 10%;
+	background: rgba(255, 255, 255, 0.65);
+	border: none;
+}
+
 input, textarea, select {
 	margin: 0.5em 0;
 	border: none;
@@ -375,13 +383,13 @@ select:focus {
 	border-radius: 0.3em;
 }
 
-.context-container > .context > * {
+.context-container > .context > div {
 	padding: 0.1em 1.5em;
 	cursor: default;
 	transition: background 0.2s;
 }
 
-.context-container > .context > *:hover {
+.context-container > .context > div:hover {
 	background: rgba(255, 255, 255, 0.05);
 }
 

@@ -1001,10 +1001,8 @@ let ctrl = false,
 	function showContext(menu, position = { x: 0, y: 0 }) {
 		contextMenu.innerHTML = "";
 
-		contextContainer.classList.remove("hidden");
-
-		contextMenu.style.left = position.x + "px";
-		contextMenu.style.top = position.y + "px";
+		let posX = position.x;
+		let posY = position.y;
 
 		Object.keys(menu).forEach((action) => {
 			if (menu[action] == "-") {
@@ -1021,6 +1019,14 @@ let ctrl = false,
 				contextMenu.appendChild(item);
 			}
 		});
+
+		if (posX + contextMenu.clientWidth > document.body.clientWidth) posX -= contextMenu.clientWidth;
+		if (posY + contextMenu.clientHeight > document.body.clientHeight) posY -= contextMenu.clientHeight;
+
+		contextMenu.style.left = posX + "px";
+		contextMenu.style.top = posY + "px";
+
+		contextContainer.classList.remove("hidden");
 	}
 
 	function hideContext() {
