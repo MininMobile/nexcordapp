@@ -250,6 +250,8 @@ let ctrl = false,
 					openRoom(room);
 				} else if (e.button == 2) {
 					showContext({
+						"Leave": () => leaveRoom(room.roomId),
+						"Divider0": "-",
 						"Favorite": () => toggleFavorite(room.roomId),
 						"Direct Chat": () => toggleDirect(room.roomId),
 					}, { x: e.clientX, y: e.clientY });
@@ -574,6 +576,16 @@ let ctrl = false,
 		roomClose.classList.add("disabled");
 		roomTitle.classList.remove("immortal");
 		roomTitle.innerText = app.name;
+	}
+
+	function leaveRoom(roomId) {
+		if (currentRoom) if (currentRoom.roomId == roomId) closeRoom();
+
+		client.leave(roomId).then(() => {
+			client.forget(roomId).then(() => {
+				getRooms();
+			}).catch(console.error);
+		}).catch(console.error);
 	}
 
 	function logout() {
@@ -995,14 +1007,19 @@ let ctrl = false,
 		contextMenu.style.top = position.y + "px";
 
 		Object.keys(menu).forEach((action) => {
-			let item = document.createElement("div");
-			item.innerText = action;
-
-			item.addEventListener("click", () => {
-				menu[action]();
-			})
-
-			contextMenu.appendChild(item);
+			if (menu[action] == "-") {
+				let divider = document.createElement("hr");
+				contextMenu.appendChild(divider);
+			} else {
+				let item = document.createElement("div");
+				item.innerText = action;
+	
+				item.addEventListener("click", () => {
+					menu[action]();
+				})
+	
+				contextMenu.appendChild(item);
+			}
 		});
 	}
 
