@@ -1,8 +1,10 @@
+const remote = require("electron").remote;
+const markdownit = require("markdown-it");
 const matrix = require("matrix-js-sdk");
 const open = require("open");
 const app = require("./lib/app");
-const remote = require("electron").remote;
 const { clipboard, dialog } = remote;
+const md = new markdownit();
 
 const win = remote.getCurrentWindow();
 
@@ -507,7 +509,7 @@ let ctrl = false,
 								} break;
 							}
 
-							content.innerHTML = escapeHtml(text);
+							content.innerHTML = md.render(text);
 						}
 					}
 				}
@@ -604,6 +606,76 @@ let ctrl = false,
 			}
 		}
 	});
+
+	function getUserAvatar(member) {
+		let avatar = document.createElement("div");
+			avatar.classList.add("avatar");
+
+		let avi;
+
+		if (member.getMxcAvatarUrl) {
+			if (member.getMxcAvatarUrl()) {
+				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
+			}
+		} else if (member.avatarUrl) {
+			avi = client.mxcUrlToHttp(member.avatarUrl);
+		} else if (member.getAvatarFallbackMember) {
+			if (member.getAvatarFallbackMember()) {
+				avi = member.getAvatarFallbackMember().getAvatarUrl().replace("undefined", "https://matrix.org");
+			} else if (ifResource(member.getAvatarUrl().replace("undefined", "https://matrix.org"))) {
+				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
+			}
+		}
+
+		if (avi) {
+			avatar.style.backgroundImage = `url("${avi}")`;
+		} else {
+			let name = member.name || member.displayName;
+
+			avatar.classList.add("none");
+			avatar.setAttribute("data", name[0] == "@" ? name[1] : name[0]);
+		}
+
+		return avatar;
+	}
+
+	function toggleFavorite(roomId) {
+		if (favoriteRooms.includes(roomId)) {
+			let fr = [];
+
+			favoriteRooms.forEach((r) => {
+				if (r != roomId)
+					fr.push(r);
+			});
+
+			favoriteRooms = fr;
+			window.localStorage.favorites = JSON.stringify(favoriteRooms);
+		} else {
+			favoriteRooms.push(roomId);
+			window.localStorage.favorites = JSON.stringify(favoriteRooms);
+		}
+
+		getRooms();
+	}
+
+	function toggleDirect(roomId) {
+		if (directRooms.includes(roomId)) {
+			let dr = [];
+
+			directRooms.forEach((r) => {
+				if (r != roomId)
+					dr.push(r);
+			});
+
+			directRooms = dr;
+			window.localStorage.directs = JSON.stringify(directRooms);
+		} else {
+			directRooms.push(roomId);
+			window.localStorage.directs = JSON.stringify(directRooms);
+		}
+
+		getRooms();
+	}
 }
 
 { // page actions
@@ -697,15 +769,6 @@ let ctrl = false,
 }
 
 { // util
-	function escapeHtml(unsafe) {
-		return unsafe
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&#039;");
-	}
-
 	function ifResource(url) {
 		let http = new XMLHttpRequest();
 
@@ -713,76 +776,6 @@ let ctrl = false,
 		http.send();
 
 		return http.status != 404;
-	}
-
-	function getUserAvatar(member) {
-		let avatar = document.createElement("div");
-			avatar.classList.add("avatar");
-
-		let avi;
-
-		if (member.getMxcAvatarUrl) {
-			if (member.getMxcAvatarUrl()) {
-				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
-			}
-		} else if (member.avatarUrl) {
-			avi = client.mxcUrlToHttp(member.avatarUrl);
-		} else if (member.getAvatarFallbackMember) {
-			if (member.getAvatarFallbackMember()) {
-				avi = member.getAvatarFallbackMember().getAvatarUrl().replace("undefined", "https://matrix.org");
-			} else if (ifResource(member.getAvatarUrl().replace("undefined", "https://matrix.org"))) {
-				avi = member.getAvatarUrl().replace("undefined", "https://matrix.org");
-			}
-		}
-
-		if (avi) {
-			avatar.style.backgroundImage = `url("${avi}")`;
-		} else {
-			let name = member.name || member.displayName;
-
-			avatar.classList.add("none");
-			avatar.setAttribute("data", name[0] == "@" ? name[1] : name[0]);
-		}
-
-		return avatar;
-	}
-
-	function toggleFavorite(roomId) {
-		if (favoriteRooms.includes(roomId)) {
-			let fr = [];
-
-			favoriteRooms.forEach((r) => {
-				if (r != roomId)
-					fr.push(r);
-			});
-
-			favoriteRooms = fr;
-			window.localStorage.favorites = JSON.stringify(favoriteRooms);
-		} else {
-			favoriteRooms.push(roomId);
-			window.localStorage.favorites = JSON.stringify(favoriteRooms);
-		}
-
-		getRooms();
-	}
-
-	function toggleDirect(roomId) {
-		if (directRooms.includes(roomId)) {
-			let dr = [];
-
-			directRooms.forEach((r) => {
-				if (r != roomId)
-					dr.push(r);
-			});
-
-			directRooms = dr;
-			window.localStorage.directs = JSON.stringify(directRooms);
-		} else {
-			directRooms.push(roomId);
-			window.localStorage.directs = JSON.stringify(directRooms);
-		}
-
-		getRooms();
 	}
 
 	function toggleMaximize() {
