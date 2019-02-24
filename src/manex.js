@@ -7,6 +7,13 @@ const { clipboard, dialog } = remote;
 
 const win = remote.getCurrentWindow();
 
+const Directions = {
+	up: 0,
+	down: 1,
+	left: 2,
+	right: 3,
+}
+
 const commands = {
 	"flip": () => { messageBox.value = "(╯°□°）╯︵ ┻━┻"; updateCommandList() },
 	"unflip": () => { messageBox.value = "┬─┬ ノ( ゜-゜ノ)"; updateCommandList() },
@@ -56,6 +63,7 @@ let favoriteRooms,
 
 // temp data
 let currentRoom = undefined;
+let selectedCommand = 0;
 // key modifiers
 let ctrl = false,
     shift = false,
@@ -747,7 +755,12 @@ let ctrl = false,
 			case "Escape": if (shift) closeRoom(); break;
 		}
 
-		updateCommandList();
+		if (e.code == "ArrowUp")
+			updateCommandList(false, Directions.up)
+		else if (e.code == "ArrowDown")
+			updateCommandList(false, Directions.down)
+		else
+			updateCommandList();
 	});
 
 	document.addEventListener("click", (e) => {
@@ -828,8 +841,8 @@ let ctrl = false,
 		}
 	}
 
-	function updateCommandList() {
-		console.log(messageBox.value);
+	function updateCommandList(resetpos = true, direction = undefined) {
+		if (resetpos) selectedCommand = 0;
 
 		if (messageBox.value[0] == "/") {
 			commandContainer.innerHTML = "";
@@ -837,13 +850,29 @@ let ctrl = false,
 			let matches = Object.keys(commands).filter((c) =>
 				new RegExp(escapeRegExp(messageBox.value.substring(1)), "g").test(c));
 
-			matches.forEach((c) => {
+			if (!resetpos) {
+				selectedCommand += direction == Directions.down ? 1 : -1;
+
+				if (selectedCommand < 0) selectedCommand = matches.length - 1;
+				if (selectedCommand >= matches.length) selectedCommand = 0;
+			}
+
+			let selected;
+
+			matches.forEach((c, i) => {
 				let command = document.createElement("div");
 				command.classList.add("command");
 				command.innerText = c;
 
+				if (i == selectedCommand) {
+					command.classList.add("selected");
+					selected = command;
+				}
+
 				commandContainer.appendChild(command);
 			});
+
+			selected.scrollIntoViewIfNeeded();
 
 			commandContainer.classList.remove("disabled");
 		} else {

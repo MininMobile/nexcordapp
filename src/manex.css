@@ -930,6 +930,10 @@ select:focus {
 	padding: 0.1em 1em;
 }
 
+.command-container > .command.selected {
+	background: rgba(0, 0, 0, 0.1);
+}
+
 .command-container > .command::before {
 	content: "/";
 	margin-right: 0.5em;
