@@ -277,7 +277,15 @@ let ctrl = false,
 					openRoom(room);
 				} else if (e.button == 2) {
 					showContext({
-						"Leave": () => leaveRoom(room.roomId),
+						"Leave": () => {
+							hideContext();
+
+							showDialog(generateOptionDialog(
+								"Are you sure you would like to leave this room? You won't be able to rejoin unless you get an invite if the room isn't public.",
+								() => { leaveRoom(room.roomId); hideDialog() },
+								() => hideDialog(),
+							));
+						},
 						"Divider0": "-",
 						"Favorite": () => toggleFavorite(room.roomId),
 						"Direct Chat": () => toggleDirect(room.roomId),
@@ -368,6 +376,7 @@ let ctrl = false,
 		currentRoom = room;
 
 		messageBox.value = "";
+		updateCommandList();
 
 		{ // update member list
 			memberList.innerHTML = "";
@@ -586,6 +595,7 @@ let ctrl = false,
 		currentRoom = undefined;
 
 		messageBox.value = "";
+		updateCommandList();
 
 		// remove selection indicator
 		let allButtons = document.getElementsByClassName("room");
@@ -759,7 +769,7 @@ let ctrl = false,
 			} break;
 		}
 
-		messageBox.focus();
+		if (!ctrl && !shift && !alt) messageBox.focus();
 	});
 
 	document.addEventListener("keyup", (e) => {

@@ -425,6 +425,8 @@ select:focus {
 }
 
 .dialog .dialog-content {
+	max-width: 50vw;
+	max-height: 50vh;
 	padding: 1.5em;
 }
 
