@@ -7,7 +7,21 @@ const { clipboard, dialog } = remote;
 
 const win = remote.getCurrentWindow();
 
-let client;
+const commands = {
+	"flip": () => { messageBox.value = "(╯°□°）╯︵ ┻━┻"; updateCommandList() },
+	"unflip": () => { messageBox.value = "┬─┬ ノ( ゜-゜ノ)"; updateCommandList() },
+	"lenny": () => { messageBox.value = "( ͡° ͜ʖ ͡°)"; updateCommandList() },
+	"kappa": () => { messageBox.value = "( ͡° ͜ʖ ͡°)"; updateCommandList() },
+	"shrug": () => { messageBox.value = "¯\_(ツ)_/¯"; updateCommandList() },
+	"s": () => { messageBox.value = "¯\_(ツ)_/¯"; updateCommandList() },
+	"me": () => {},
+	"leave": () => {},
+	"join": () => {},
+	"kick": () => {},
+	"ban": () => {},
+	"settings": () => {},
+	"help": () => {},
+}
 
 // get big boys
 let loadingSplash = document.getElementById("loading-splash");
@@ -26,9 +40,13 @@ let roomClose = document.getElementById("room-close");
 let roomTitle = document.getElementById("room-title");
 let mainMenu = document.getElementById("main-menu");
 // get message box
+let commandContainer = document.getElementById("command-container");
 let messageBoxFormContainer = document.getElementById("messagebox-form-container");
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
+
+// important
+let client;
 
 // cache
 let favoriteRooms,
@@ -341,6 +359,8 @@ let ctrl = false,
 	function openRoom(room) {
 		currentRoom = room;
 
+		messageBox.value = "";
+
 		{ // update member list
 			memberList.innerHTML = "";
 
@@ -557,6 +577,8 @@ let ctrl = false,
 	function closeRoom() {
 		currentRoom = undefined;
 
+		messageBox.value = "";
+
 		// remove selection indicator
 		let allButtons = document.getElementsByClassName("room");
 
@@ -724,6 +746,8 @@ let ctrl = false,
 
 			case "Escape": if (shift) closeRoom(); break;
 		}
+
+		updateCommandList();
 	});
 
 	document.addEventListener("click", (e) => {
@@ -732,7 +756,7 @@ let ctrl = false,
 				e.preventDefault();
 				open(e.target.href);
 			}
-	})
+	});
 
 	roomClose.addEventListener("click", closeRoom);
 
@@ -776,6 +800,10 @@ let ctrl = false,
 }
 
 { // util
+	function escapeRegExp(string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
 	function ifResource(url) {
 		let http = new XMLHttpRequest();
 
@@ -797,6 +825,31 @@ let ctrl = false,
 			a.classList.add("maximized");
 			b.classList.add("maximized");
 			win.maximize();
+		}
+	}
+
+	function updateCommandList() {
+		console.log(messageBox.value);
+
+		if (messageBox.value[0] == "/") {
+			commandContainer.innerHTML = "";
+
+			let matches = Object.keys(commands).filter((c) =>
+				new RegExp(escapeRegExp(messageBox.value.substring(1)), "g").test(c));
+
+			matches.forEach((c) => {
+				let command = document.createElement("div");
+				command.classList.add("command");
+				command.innerText = c;
+
+				commandContainer.appendChild(command);
+			});
+
+			commandContainer.classList.remove("disabled");
+		} else {
+			commandContainer.classList.add("disabled");
+
+			commandContainer.innerHTML = "";
 		}
 	}
 
