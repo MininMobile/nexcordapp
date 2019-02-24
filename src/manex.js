@@ -109,8 +109,9 @@ let ctrl = false,
 		}
 	}
 
-	function updateCommandList(resetpos = true, direction = undefined) {
+	function updateCommandList(resetpos = true, direction = undefined, overridepos = undefined) {
 		if (resetpos) selectedCommand = 0;
+		if (overridepos) selectedCommand = overridepos;
 
 		let applicable = messageBox.value[0] == "/";
 		
@@ -124,7 +125,7 @@ let ctrl = false,
 			let matches = Object.keys(commands).filter((c) =>
 				new RegExp(escapeRegExp(messageBox.value.substring(1)), "g").test(c));
 
-			if (!resetpos) {
+			if (!resetpos && direction != undefined) {
 				selectedCommand += direction == Directions.down ? 1 : -1;
 
 				if (selectedCommand < 0) selectedCommand = matches.length - 1;
@@ -137,6 +138,12 @@ let ctrl = false,
 				let command = document.createElement("div");
 				command.classList.add("command");
 				command.innerText = c;
+
+				command.addEventListener("mouseenter", () =>
+					updateCommandList(false, undefined, i));
+
+				command.addEventListener("mouseup", () =>
+					commands[c]());
 
 				if (i == selectedCommand) {
 					command.classList.add("selected");
@@ -1152,8 +1159,6 @@ updateOnlineStatus();
 			case "ControlRight": ctrl = true; break;
 			case "ShiftRight": shift = true; break;
 			case "AltRight": alt = true; break;
-
-			case "Escape": if (shift) closeRoom(); break;
 		}
 
 		if (e.code != "ArrowUp" && e.code != "ArrowDown")

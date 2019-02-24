@@ -974,6 +974,7 @@ select:focus {
 
 .command-container > .command {
 	padding: 0.1em 1em;
+	cursor: pointer;
 }
 
 .command-container > .command.selected {
