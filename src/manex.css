@@ -476,8 +476,8 @@ select:focus {
 }
 
 .dialog .image-preview {
-	max-width: 50vw;
-	max-height: 50vh;
+	max-width: 70vw;
+	max-height: 70vh;
 	display: block;
 	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.8);
 }

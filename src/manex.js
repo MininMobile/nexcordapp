@@ -56,7 +56,7 @@ let connectionIndicator = document.getElementById("indicator-connection");
 
 // important
 let client;
-let statusInterval = setInterval(updateOnlineStatus, 5000);
+let statusInterval = setInterval(() => updateOnlineStatus(), 5000);
 
 // cache
 let favoriteRooms,
@@ -112,7 +112,13 @@ let ctrl = false,
 	function updateCommandList(resetpos = true, direction = undefined) {
 		if (resetpos) selectedCommand = 0;
 
-		if (messageBox.value[0] == "/") {
+		let applicable = messageBox.value[0] == "/";
+		
+		if (applicable)
+			if (messageBox.value.includes(" "))
+				applicable = false;
+
+		if (applicable) {
 			commandContainer.innerHTML = "";
 
 			let matches = Object.keys(commands).filter((c) =>
@@ -1109,22 +1115,29 @@ updateOnlineStatus();
 			case "AltRight": alt = true; break;
 
 			case "ArrowUp": if (messageBox.value[0] == "/") {
-				updateCommandList(false, Directions.up); e.preventDefault();
+				if (!messageBox.value.includes(" ")) {
+					updateCommandList(false, Directions.up);
+					e.preventDefault();
+				}
 			} break;
 
 			case "ArrowDown": if (messageBox.value[0] == "/") {
-				updateCommandList(false, Directions.down);
-				e.preventDefault();
+				if (!messageBox.value.includes(" ")) {
+					updateCommandList(false, Directions.down);
+					e.preventDefault();
+				}
 			} break;
 
 			case "Enter": case "Tab": if (messageBox.value[0] == "/") {
-				let selected = document.querySelector(".command-container > .command.selected");
+				if (!messageBox.value.includes(" ")) {
+					let selected = document.querySelector(".command-container > .command.selected");
 
-				if (selected) {
-					commands[selected.innerText]();
+					if (selected) {
+						commands[selected.innerText]();
+					}
+
+					e.preventDefault();
 				}
-
-				e.preventDefault();
 			} break;
 		}
 
