@@ -51,9 +51,12 @@ let commandContainer = document.getElementById("command-container");
 let messageBoxFormContainer = document.getElementById("messagebox-form-container");
 let messageBoxForm = document.getElementById("messagebox-form");
 let messageBox = document.getElementById("messagebox");
+// misc
+let connectionIndicator = document.getElementById("indicator-connection");
 
 // important
 let client;
+let statusInterval = setInterval(updateOnlineStatus, 5000);
 
 // cache
 let favoriteRooms,
@@ -68,6 +71,362 @@ let selectedCommand = 0;
 let ctrl = false,
     shift = false,
     alt = false;
+
+{ // util
+	function escapeRegExp(string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
+	function ifResource(url) {
+		let http = new XMLHttpRequest();
+
+		http.open("HEAD", url, false);
+		http.send();
+
+		return http.status != 404;
+	}
+
+	function toggleMaximize() {
+		let a = document.getElementById("login-action-maximize");
+		let b = document.getElementById("main-action-maximize");
+
+		if (win.isMaximized()) {
+			a.classList.remove("maximized");
+			b.classList.remove("maximized");
+			win.unmaximize();
+		} else {
+			a.classList.add("maximized");
+			b.classList.add("maximized");
+			win.maximize();
+		}
+	}
+
+	function updateOnlineStatus() {
+		if (navigator.onLine) {
+			connectionIndicator.classList.add("hidden");
+		} else {
+			connectionIndicator.classList.remove("hidden");
+		}
+	}
+
+	function updateCommandList(resetpos = true, direction = undefined) {
+		if (resetpos) selectedCommand = 0;
+
+		if (messageBox.value[0] == "/") {
+			commandContainer.innerHTML = "";
+
+			let matches = Object.keys(commands).filter((c) =>
+				new RegExp(escapeRegExp(messageBox.value.substring(1)), "g").test(c));
+
+			if (!resetpos) {
+				selectedCommand += direction == Directions.down ? 1 : -1;
+
+				if (selectedCommand < 0) selectedCommand = matches.length - 1;
+				if (selectedCommand >= matches.length) selectedCommand = 0;
+			}
+
+			let selected;
+
+			matches.forEach((c, i) => {
+				let command = document.createElement("div");
+				command.classList.add("command");
+				command.innerText = c;
+
+				if (i == selectedCommand) {
+					command.classList.add("selected");
+					selected = command;
+				}
+
+				commandContainer.appendChild(command);
+			});
+
+			if (selected) selected.scrollIntoViewIfNeeded();
+
+			commandContainer.classList.remove("disabled");
+		} else {
+			commandContainer.classList.add("disabled");
+
+			commandContainer.innerHTML = "";
+		}
+	}
+
+	function generateOptionDialog(text, acceptAction, declineAction = undefined, cancelAction = undefined) {
+		let container = document.createElement("div");
+			container.classList.add("dialog-box");
+
+		let content = document.createElement("div");
+			content.classList.add("dialog-content");
+			content.innerText = text;
+			container.appendChild(content);
+
+		let buttons = document.createElement("div");
+			buttons.classList.add("buttons");
+			container.appendChild(buttons);
+
+		{ // generate buttons
+			{ // accept button
+				let button = document.createElement("div");
+				button.classList.add("button", "primary");
+				button.innerText = declineAction ? "Accept" : "Ok";
+				button.addEventListener("click", acceptAction);
+				buttons.appendChild(button);
+			}
+			
+			if (declineAction) { // decline button
+				let button = document.createElement("div");
+				button.classList.add("button");
+				button.innerText = "Decline";
+				button.addEventListener("click", declineAction);
+				buttons.appendChild(button);
+			}
+			
+			if (cancelAction) { // cancel button
+				let button = document.createElement("div");
+				button.classList.add("button");
+				button.innerText = "Cancel"
+				button.addEventListener("click", cancelAction);
+				buttons.appendChild(button);
+			}
+		}
+
+		return container;
+	}
+
+	function openSettings(settings) {
+		closeRoom();
+
+		roomClose.classList.remove("disabled");
+		roomTitle.classList.add("immortal");
+
+		let categoryContainer = document.createElement("div");
+			categoryContainer.classList.add("category-container");
+			messageList.appendChild(categoryContainer);
+
+		let optionsWrapper = document.createElement("div");
+			optionsWrapper.classList.add("options-wrapper");
+			messageList.appendChild(optionsWrapper);
+
+		let optionsContainer = document.createElement("div");
+			optionsContainer.classList.add("options-container");
+			optionsWrapper.appendChild(optionsContainer);
+
+		settings.forEach((category, i) => {
+			let button = document.createElement("div");
+			button.classList.add("category");
+			button.innerText = category.name;
+
+			button.addEventListener("click", () => {
+				optionsContainer.innerHTML = "";
+
+				for (let i = 0; i < categoryContainer.children.length; i++) {
+					categoryContainer.children[i].classList.remove("selected");
+				}
+	
+				button.classList.add("selected");
+
+				category.options.forEach((setting) => {
+					switch (setting.type) {
+						case "switch": {
+							let container = document.createElement("div");
+								container.classList.add("input-container");
+								optionsContainer.appendChild(container);
+	
+							let titleContainer = document.createElement("div");
+								titleContainer.classList.add("title");
+								container.appendChild(titleContainer);
+	
+							let title = document.createElement("div");
+								title.innerText = setting.name;
+								titleContainer.appendChild(title);
+	
+							let subtitle = document.createElement("div");
+								subtitle.innerText = setting.description;
+								titleContainer.appendChild(subtitle);
+	
+							let switchContainer = document.createElement("div");
+								switchContainer.classList.add("checkbox-container");
+								container.appendChild(switchContainer);
+	
+							let input = document.createElement("input");
+								input.type = "checkbox";
+								input.checked = setting.value;
+								input.addEventListener("change", setting.onchange);
+								switchContainer.appendChild(input);
+	
+							let handle = document.createElement("span");
+								handle.classList.add("handle");
+								switchContainer.appendChild(handle);
+						} break;
+	
+						case "text": {
+							let container = document.createElement("div");
+								container.classList.add("input-container");
+								optionsContainer.appendChild(container);
+	
+							let titleContainer = document.createElement("div");
+								titleContainer.classList.add("title");
+								container.appendChild(titleContainer);
+	
+							let title = document.createElement("div");
+								title.innerText = setting.name;
+								titleContainer.appendChild(title);
+	
+							let subtitle = document.createElement("div");
+								subtitle.innerText = setting.description;
+								titleContainer.appendChild(subtitle);
+	
+							let input = document.createElement("input");
+								input.type = "text";
+								input.placeholder = setting.placeholder || "";
+								input.value = setting.value || "";
+								input.addEventListener("change", setting.onchange);
+								container.appendChild(input);
+						} break;
+	
+						case "bigtext": {
+							let container = document.createElement("div");
+								container.classList.add("input-container");
+								optionsContainer.appendChild(container);
+	
+							let titleContainer = document.createElement("div");
+								titleContainer.classList.add("title");
+								container.appendChild(titleContainer);
+	
+							let title = document.createElement("div");
+								title.innerText = setting.name;
+								titleContainer.appendChild(title);
+	
+							let subtitle = document.createElement("div");
+								subtitle.innerText = setting.description;
+								titleContainer.appendChild(subtitle);
+	
+							let input = document.createElement("textarea");
+								input.placeholder = setting.placeholder || "";
+								input.value = setting.value || "";
+								input.addEventListener("change", setting.onchange);
+								container.appendChild(input);
+						} break;
+	
+						case "dropdown": {
+							let container = document.createElement("div");
+								container.classList.add("input-container");
+								optionsContainer.appendChild(container);
+	
+							let titleContainer = document.createElement("div");
+								titleContainer.classList.add("title");
+								container.appendChild(titleContainer);
+	
+							let title = document.createElement("div");
+								title.innerText = setting.name;
+								titleContainer.appendChild(title);
+	
+							let subtitle = document.createElement("div");
+								subtitle.innerText = setting.description;
+								titleContainer.appendChild(subtitle);
+	
+							let input = document.createElement("select");
+								setting.values.forEach((v, i) =>
+									input.options.add(new Option(v, i, false, i == (setting.value || 0))));
+								input.addEventListener("change", setting.onchange);
+								container.appendChild(input);
+						} break;
+
+						case "html": {
+							optionsContainer.appendChild(setting.content);
+						} break;
+		
+						default: {
+							console.error("Attempted to create a new setting with invalid type.");
+						} break;
+					}
+				});
+			});
+
+			categoryContainer.appendChild(button);
+
+			if (i == 0) button.click();
+		});
+	}
+
+	function showContext(menu, position = { x: 0, y: 0 }) {
+		contextMenu.innerHTML = "";
+
+		let posX = position.x;
+		let posY = position.y;
+
+		Object.keys(menu).forEach((action) => {
+			if (menu[action] == "-") {
+				let divider = document.createElement("hr");
+				contextMenu.appendChild(divider);
+			} else {
+				let item = document.createElement("div");
+				item.innerText = action;
+	
+				item.addEventListener("click", () => {
+					menu[action]();
+				})
+	
+				contextMenu.appendChild(item);
+			}
+		});
+
+		if (posX + contextMenu.clientWidth > document.body.clientWidth) posX -= contextMenu.clientWidth;
+		if (posY + contextMenu.clientHeight > document.body.clientHeight) posY -= contextMenu.clientHeight;
+
+		contextMenu.style.left = posX + "px";
+		contextMenu.style.top = posY + "px";
+
+		contextContainer.classList.remove("hidden");
+	}
+
+	function hideContext() {
+		contextContainer.classList.add("hidden");
+		contextMenu.innerHTML = "";
+	}
+
+	function showDialog(content) {
+		dialogContainer.appendChild(content);
+		dialogContainer.classList.remove("hidden");
+	}
+
+	function hideDialog(content) {
+		dialogContainer.classList.add("hidden");
+
+		setTimeout(() => {
+			dialogContainer.innerHTML = "";
+		}, 300);
+	}
+
+	function showLoading() {
+		return new Promise((resolve, reject) => {
+			if (!loadingSplash.classList.contains("hidden")) {
+				resolve();
+			} else {
+				loadingSplash.classList.remove("hidden");
+
+				setTimeout(() => {
+					resolve();
+				}, 300);
+			}
+		});
+	}
+
+	function hideLoading() {
+		return new Promise((resolve, reject) => {
+			if (loadingSplash.classList.contains("hidden")) {
+				resolve();
+			} else {
+				loadingSplash.classList.add("hidden");
+
+				setTimeout(() => {
+					resolve();
+				}, 300);
+			}
+		});
+	}
+}
+
+updateOnlineStatus();
 
 { // preserve window size
 	let size = JSON.parse(window.localStorage.size || "{}");
@@ -835,350 +1194,4 @@ let ctrl = false,
 
 	win.on("move", () =>
 		window.localStorage.size = JSON.stringify(win.getBounds()));
-}
-
-{ // util
-	function escapeRegExp(string) {
-		return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-	}
-
-	function ifResource(url) {
-		let http = new XMLHttpRequest();
-
-		http.open("HEAD", url, false);
-		http.send();
-
-		return http.status != 404;
-	}
-
-	function toggleMaximize() {
-		let a = document.getElementById("login-action-maximize");
-		let b = document.getElementById("main-action-maximize");
-
-		if (win.isMaximized()) {
-			a.classList.remove("maximized");
-			b.classList.remove("maximized");
-			win.unmaximize();
-		} else {
-			a.classList.add("maximized");
-			b.classList.add("maximized");
-			win.maximize();
-		}
-	}
-
-	function updateCommandList(resetpos = true, direction = undefined) {
-		if (resetpos) selectedCommand = 0;
-
-		if (messageBox.value[0] == "/") {
-			commandContainer.innerHTML = "";
-
-			let matches = Object.keys(commands).filter((c) =>
-				new RegExp(escapeRegExp(messageBox.value.substring(1)), "g").test(c));
-
-			if (!resetpos) {
-				selectedCommand += direction == Directions.down ? 1 : -1;
-
-				if (selectedCommand < 0) selectedCommand = matches.length - 1;
-				if (selectedCommand >= matches.length) selectedCommand = 0;
-			}
-
-			let selected;
-
-			matches.forEach((c, i) => {
-				let command = document.createElement("div");
-				command.classList.add("command");
-				command.innerText = c;
-
-				if (i == selectedCommand) {
-					command.classList.add("selected");
-					selected = command;
-				}
-
-				commandContainer.appendChild(command);
-			});
-
-			if (selected) selected.scrollIntoViewIfNeeded();
-
-			commandContainer.classList.remove("disabled");
-		} else {
-			commandContainer.classList.add("disabled");
-
-			commandContainer.innerHTML = "";
-		}
-	}
-
-	function generateOptionDialog(text, acceptAction, declineAction = undefined, cancelAction = undefined) {
-		let container = document.createElement("div");
-			container.classList.add("dialog-box");
-
-		let content = document.createElement("div");
-			content.classList.add("dialog-content");
-			content.innerText = text;
-			container.appendChild(content);
-
-		let buttons = document.createElement("div");
-			buttons.classList.add("buttons");
-			container.appendChild(buttons);
-
-		{ // generate buttons
-			{ // accept button
-				let button = document.createElement("div");
-				button.classList.add("button", "primary");
-				button.innerText = declineAction ? "Accept" : "Ok";
-				button.addEventListener("click", acceptAction);
-				buttons.appendChild(button);
-			}
-			
-			if (declineAction) { // decline button
-				let button = document.createElement("div");
-				button.classList.add("button");
-				button.innerText = "Decline";
-				button.addEventListener("click", declineAction);
-				buttons.appendChild(button);
-			}
-			
-			if (cancelAction) { // cancel button
-				let button = document.createElement("div");
-				button.classList.add("button");
-				button.innerText = "Cancel"
-				button.addEventListener("click", cancelAction);
-				buttons.appendChild(button);
-			}
-		}
-
-		return container;
-	}
-
-	function openSettings(settings) {
-		closeRoom();
-
-		roomClose.classList.remove("disabled");
-		roomTitle.classList.add("immortal");
-
-		let categoryContainer = document.createElement("div");
-			categoryContainer.classList.add("category-container");
-			messageList.appendChild(categoryContainer);
-
-		let optionsWrapper = document.createElement("div");
-			optionsWrapper.classList.add("options-wrapper");
-			messageList.appendChild(optionsWrapper);
-
-		let optionsContainer = document.createElement("div");
-			optionsContainer.classList.add("options-container");
-			optionsWrapper.appendChild(optionsContainer);
-
-		settings.forEach((category, i) => {
-			let button = document.createElement("div");
-			button.classList.add("category");
-			button.innerText = category.name;
-
-			button.addEventListener("click", () => {
-				optionsContainer.innerHTML = "";
-
-				for (let i = 0; i < categoryContainer.children.length; i++) {
-					categoryContainer.children[i].classList.remove("selected");
-				}
-	
-				button.classList.add("selected");
-
-				category.options.forEach((setting) => {
-					switch (setting.type) {
-						case "switch": {
-							let container = document.createElement("div");
-								container.classList.add("input-container");
-								optionsContainer.appendChild(container);
-	
-							let titleContainer = document.createElement("div");
-								titleContainer.classList.add("title");
-								container.appendChild(titleContainer);
-	
-							let title = document.createElement("div");
-								title.innerText = setting.name;
-								titleContainer.appendChild(title);
-	
-							let subtitle = document.createElement("div");
-								subtitle.innerText = setting.description;
-								titleContainer.appendChild(subtitle);
-	
-							let switchContainer = document.createElement("div");
-								switchContainer.classList.add("checkbox-container");
-								container.appendChild(switchContainer);
-	
-							let input = document.createElement("input");
-								input.type = "checkbox";
-								input.checked = setting.value;
-								input.addEventListener("change", setting.onchange);
-								switchContainer.appendChild(input);
-	
-							let handle = document.createElement("span");
-								handle.classList.add("handle");
-								switchContainer.appendChild(handle);
-						} break;
-	
-						case "text": {
-							let container = document.createElement("div");
-								container.classList.add("input-container");
-								optionsContainer.appendChild(container);
-	
-							let titleContainer = document.createElement("div");
-								titleContainer.classList.add("title");
-								container.appendChild(titleContainer);
-	
-							let title = document.createElement("div");
-								title.innerText = setting.name;
-								titleContainer.appendChild(title);
-	
-							let subtitle = document.createElement("div");
-								subtitle.innerText = setting.description;
-								titleContainer.appendChild(subtitle);
-	
-							let input = document.createElement("input");
-								input.type = "text";
-								input.placeholder = setting.placeholder || "";
-								input.value = setting.value || "";
-								input.addEventListener("change", setting.onchange);
-								container.appendChild(input);
-						} break;
-	
-						case "bigtext": {
-							let container = document.createElement("div");
-								container.classList.add("input-container");
-								optionsContainer.appendChild(container);
-	
-							let titleContainer = document.createElement("div");
-								titleContainer.classList.add("title");
-								container.appendChild(titleContainer);
-	
-							let title = document.createElement("div");
-								title.innerText = setting.name;
-								titleContainer.appendChild(title);
-	
-							let subtitle = document.createElement("div");
-								subtitle.innerText = setting.description;
-								titleContainer.appendChild(subtitle);
-	
-							let input = document.createElement("textarea");
-								input.placeholder = setting.placeholder || "";
-								input.value = setting.value || "";
-								input.addEventListener("change", setting.onchange);
-								container.appendChild(input);
-						} break;
-	
-						case "dropdown": {
-							let container = document.createElement("div");
-								container.classList.add("input-container");
-								optionsContainer.appendChild(container);
-	
-							let titleContainer = document.createElement("div");
-								titleContainer.classList.add("title");
-								container.appendChild(titleContainer);
-	
-							let title = document.createElement("div");
-								title.innerText = setting.name;
-								titleContainer.appendChild(title);
-	
-							let subtitle = document.createElement("div");
-								subtitle.innerText = setting.description;
-								titleContainer.appendChild(subtitle);
-	
-							let input = document.createElement("select");
-								setting.values.forEach((v, i) =>
-									input.options.add(new Option(v, i, false, i == (setting.value || 0))));
-								input.addEventListener("change", setting.onchange);
-								container.appendChild(input);
-						} break;
-
-						case "html": {
-							optionsContainer.appendChild(setting.content);
-						} break;
-		
-						default: {
-							console.error("Attempted to create a new setting with invalid type.");
-						} break;
-					}
-				});
-			});
-
-			categoryContainer.appendChild(button);
-
-			if (i == 0) button.click();
-		});
-	}
-
-	function showContext(menu, position = { x: 0, y: 0 }) {
-		contextMenu.innerHTML = "";
-
-		let posX = position.x;
-		let posY = position.y;
-
-		Object.keys(menu).forEach((action) => {
-			if (menu[action] == "-") {
-				let divider = document.createElement("hr");
-				contextMenu.appendChild(divider);
-			} else {
-				let item = document.createElement("div");
-				item.innerText = action;
-	
-				item.addEventListener("click", () => {
-					menu[action]();
-				})
-	
-				contextMenu.appendChild(item);
-			}
-		});
-
-		if (posX + contextMenu.clientWidth > document.body.clientWidth) posX -= contextMenu.clientWidth;
-		if (posY + contextMenu.clientHeight > document.body.clientHeight) posY -= contextMenu.clientHeight;
-
-		contextMenu.style.left = posX + "px";
-		contextMenu.style.top = posY + "px";
-
-		contextContainer.classList.remove("hidden");
-	}
-
-	function hideContext() {
-		contextContainer.classList.add("hidden");
-		contextMenu.innerHTML = "";
-	}
-
-	function showDialog(content) {
-		dialogContainer.appendChild(content);
-		dialogContainer.classList.remove("hidden");
-	}
-
-	function hideDialog(content) {
-		dialogContainer.classList.add("hidden");
-
-		setTimeout(() => {
-			dialogContainer.innerHTML = "";
-		}, 300);
-	}
-
-	function showLoading() {
-		return new Promise((resolve, reject) => {
-			if (!loadingSplash.classList.contains("hidden")) {
-				resolve();
-			} else {
-				loadingSplash.classList.remove("hidden");
-
-				setTimeout(() => {
-					resolve();
-				}, 300);
-			}
-		});
-	}
-
-	function hideLoading() {
-		return new Promise((resolve, reject) => {
-			if (loadingSplash.classList.contains("hidden")) {
-				resolve();
-			} else {
-				loadingSplash.classList.add("hidden");
-
-				setTimeout(() => {
-					resolve();
-				}, 300);
-			}
-		});
-	}
 }

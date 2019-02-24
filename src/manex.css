@@ -274,6 +274,43 @@ select:focus {
 .actions > .maximize { background-image: url("img/button/maximize.svg"); }
 .actions > .close    { background-image: url("img/button/close.svg");    }
 
+/* indicators */
+
+.indicator-connection.hidden {
+	top: -2.5em;
+}
+
+.indicator-connection {
+	height: 2em;
+	padding: 0 0.65em;
+	background: #f44336;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 0.5em;
+	right: 0.5em;
+	z-index: 9999;
+	border-radius: 0.3em;
+	transition: top 0.3s, opacity 0.3s;
+}
+
+.indicator-connection::before {
+	content: "";
+	width: 0.5em;
+	height: 0.5em;
+	margin-right: 0.5em;
+	display: block;
+	border: 2px solid white;
+	border-top: 2px solid transparent;
+	border-radius: 50%;
+	animation: rotate 1s infinite linear;
+}
+
+.indicator-connection::after {
+	content: "No Internet Connection";
+	color: white;
+}
+
 /* titlebar */
 
 .titlebar {
@@ -649,6 +686,13 @@ select:focus {
 	flex: 1;
 	font-size: 0.9em;
 	-webkit-user-select: initial;
+	overflow: hidden;
+}
+
+.room-list-container > .main-menu > .user-info div {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .room-list-container > .main-menu > .user-info span {
