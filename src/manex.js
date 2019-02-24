@@ -19,8 +19,8 @@ const commands = {
 	"unflip": () => { messageBox.value = "┬─┬ ノ( ゜-゜ノ)"; updateCommandList() },
 	"lenny": () => { messageBox.value = "( ͡° ͜ʖ ͡°)"; updateCommandList() },
 	"kappa": () => { messageBox.value = "( ͡° ͜ʖ ͡°)"; updateCommandList() },
-	"shrug": () => { messageBox.value = "¯\_(ツ)_/¯"; updateCommandList() },
-	"s": () => { messageBox.value = "¯\_(ツ)_/¯"; updateCommandList() },
+	"s": () => { messageBox.value = "¯\\\\\\_(ツ)_/¯"; updateCommandList() },
+	"shrug": () => { messageBox.value = "¯\\\\\\_(ツ)_/¯"; updateCommandList() },
 	"me": () => {},
 	"leave": () => {},
 	"join": () => {},
@@ -738,6 +738,25 @@ let ctrl = false,
 			case "ControlRight": ctrl = true; break;
 			case "ShiftRight": shift = true; break;
 			case "AltRight": alt = true; break;
+
+			case "ArrowUp": if (messageBox.value[0] == "/") {
+				updateCommandList(false, Directions.up); e.preventDefault();
+			} break;
+
+			case "ArrowDown": if (messageBox.value[0] == "/") {
+				updateCommandList(false, Directions.down);
+				e.preventDefault();
+			} break;
+
+			case "Enter": case "Tab": if (messageBox.value[0] == "/") {
+				let selected = document.querySelector(".command-container > .command.selected");
+
+				if (selected) {
+					commands[selected.innerText]();
+				}
+
+				e.preventDefault();
+			} break;
 		}
 
 		messageBox.focus();
@@ -755,11 +774,7 @@ let ctrl = false,
 			case "Escape": if (shift) closeRoom(); break;
 		}
 
-		if (e.code == "ArrowUp")
-			updateCommandList(false, Directions.up)
-		else if (e.code == "ArrowDown")
-			updateCommandList(false, Directions.down)
-		else
+		if (e.code != "ArrowUp" && e.code != "ArrowDown")
 			updateCommandList();
 	});
 
@@ -872,7 +887,7 @@ let ctrl = false,
 				commandContainer.appendChild(command);
 			});
 
-			selected.scrollIntoViewIfNeeded();
+			if (selected) selected.scrollIntoViewIfNeeded();
 
 			commandContainer.classList.remove("disabled");
 		} else {
