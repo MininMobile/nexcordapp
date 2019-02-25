@@ -83,7 +83,7 @@ let ctrl = false,
 		http.open("HEAD", url, false);
 		http.send();
 
-		return http.status != 404;
+		return http.status.toString().startsWith(2);
 	}
 
 	function toggleMaximize() {
