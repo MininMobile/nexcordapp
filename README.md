@@ -48,5 +48,6 @@ electron .
 
 ### Dependencies
 - Electron ([npmjs.com](https://www.npmjs.com/package/electron))
+- Markdown It ([npmjs.com](https://www.npmjs.com/package/markdown-it))
 - Matrix JS SDK ([npmjs.com](https://www.npmjs.com/package/matrix-js-sdk))
 - Node Open ([npmjs.com](https://www.npmjs.com/package/open))
