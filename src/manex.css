@@ -71,6 +71,13 @@ hr {
 	border: none;
 }
 
+blockquote {
+	margin: 0.2em 0;
+	padding: 0.2em 0.5em;
+	background: rgba(0, 0, 0, 0.1);
+	border-left: 3px solid #161621;
+}
+
 input, textarea, select {
 	margin: 0.5em 0;
 	border: none;
@@ -865,6 +872,10 @@ select:focus {
 	margin: 0.5em 0;
 	position: relative;
 	text-align: center;
+}
+
+.message-list > .divider:first-child {
+	margin-top: 0;
 }
 
 .message-list > .divider::before {
