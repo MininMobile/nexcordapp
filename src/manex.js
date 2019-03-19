@@ -397,6 +397,18 @@ let ctrl = false,
 		contextMenu.innerHTML = "";
 	}
 
+	function errorDialog(e) {
+		let container = document.createElement("div");
+			container.classList.add("dialog-box");
+
+		let textbox = document.createElement("div");
+			textbox.classList.add("textbox");
+			textbox.innerText = e;
+			container.appendChild(textbox);
+
+		showDialog(generateOptionDialog(e, () => hideDialog()));
+	}
+
 	function showDialog(content) {
 		dialogContainer.appendChild(content);
 		dialogContainer.classList.remove("hidden");
@@ -488,7 +500,7 @@ updateOnlineStatus();
 
 		client.loginWithPassword(loginUsername.value, loginPassword.value)
 			.then((data) => startClient(data, true))
-			.catch((e) => console.error(e));
+			.catch((e) => errorDialog(e));
 	});
 }
 
@@ -1013,8 +1025,8 @@ updateOnlineStatus();
 		client.leave(roomId).then(() => {
 			client.forget(roomId).then(() => {
 				getRooms();
-			}).catch(console.error);
-		}).catch(console.error);
+			}).catch((e) => errorDialog(e));
+		}).catch((e) => errorDialog(e));
 	}
 
 	function logout() {
@@ -1214,7 +1226,7 @@ updateOnlineStatus();
 		}, "").then((data) => {
 			openRoom(currentRoom);
 		}).catch((e) => {
-			console.log(e);
+			errorDialog(e);
 		});
 
 		messageBox.value = "";
