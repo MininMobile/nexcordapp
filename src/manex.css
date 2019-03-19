@@ -1,6 +1,5 @@
 :root {
-	--accent: #673ab7;
-}
+	--accent: #673ab7; }
 
 ::-webkit-scrollbar {
 	width: 1em;
@@ -21,7 +20,6 @@
 }
 
 /* fonts */
-
 @font-face {
 	font-family: Arimo;
 	src: url(./font/Arimo-Regular.woff);
@@ -38,7 +36,6 @@
 }
 
 /* elements */
-
 html, body {
 	width: 100vw;
 	height: 100vh;
@@ -190,7 +187,6 @@ select:focus {
 /* 	border-radius: 50%; */
 /* 	-webkit-appearance: none; */
 /* } */
-
 @keyframes slide-in {
 	from {
 		left: 0;
@@ -204,7 +200,6 @@ select:focus {
 }
 
 /* util */
-
 .hidden {
 	opacity: 0;
 	pointer-events: none;
@@ -268,14 +263,27 @@ select:focus {
 	cursor: pointer;
 }
 
-.actions > .settings { background-image: url("img/button/settings.svg"); }
-.actions > .logout   { background-image: url("img/button/logout.svg");   }
-.actions > .minimize { background-image: url("img/button/minimize.svg"); }
-.actions > .maximize { background-image: url("img/button/maximize.svg"); }
-.actions > .close    { background-image: url("img/button/close.svg");    }
+.actions > .settings {
+	background-image: url("img/button/settings.svg");
+}
+
+.actions > .logout {
+	background-image: url("img/button/logout.svg");
+}
+
+.actions > .minimize {
+	background-image: url("img/button/minimize.svg");
+}
+
+.actions > .maximize {
+	background-image: url("img/button/maximize.svg");
+}
+
+.actions > .close {
+	background-image: url("img/button/close.svg");
+}
 
 /* indicators */
-
 .indicator-connection.hidden {
 	top: -2.5em;
 }
@@ -312,7 +320,6 @@ select:focus {
 }
 
 /* titlebar */
-
 .titlebar {
 	height: 2.4em;
 	display: flex;
@@ -335,7 +342,6 @@ select:focus {
 }
 
 /* loading screen */
-
 .splash {
 	width: 100vw;
 	height: 100vh;
@@ -410,7 +416,6 @@ select:focus {
 }
 
 /* context menu */
-
 .context-container {
 	width: 100vw;
 	height: 100vh;
@@ -440,7 +445,6 @@ select:focus {
 }
 
 /* dialogs */
-
 .dialog {
 	width: 100vw;
 	height: 100vh;
@@ -505,7 +509,6 @@ select:focus {
 }
 
 /* login layout */
-
 .wrapper.login {
 	width: 100vw;
 	height: 100vh;
@@ -541,8 +544,7 @@ select:focus {
 	flex-direction: column;
 }
 
-.wrapper.login input[type="text"],
-.wrapper.login input[type="password"] {
+.wrapper.login input[type="text"], .wrapper.login input[type="password"] {
 	height: 1.4em !important;
 	padding: 0.25em 0.75em !important;
 	margin: 0.5em 0 !important;
@@ -553,13 +555,11 @@ select:focus {
 	transition: none !important;
 }
 
-.wrapper.login input[type="text"]:focus,
-.wrapper.login input[type="password"]:focus {
+.wrapper.login input[type="text"]:focus, .wrapper.login input[type="password"]:focus {
 	border: none !important;
 }
 
-.wrapper.login input[type="text"] + div,
-.wrapper.login input[type="password"] + div {
+.wrapper.login input[type="text"] + div, .wrapper.login input[type="password"] + div {
 	content: "";
 	width: 0;
 	height: 2px;
@@ -571,15 +571,13 @@ select:focus {
 	transition: width 0.2s, left 0.2s;
 }
 
-.wrapper.login input[type="text"]:focus + div,
-.wrapper.login input[type="password"]:focus + div {
+.wrapper.login input[type="text"]:focus + div, .wrapper.login input[type="password"]:focus + div {
 	width: 100%;
 	left: 0;
 	animation: slide-in 0.2s;
 }
 
 /* chat layout */
-
 .wrapper.chat {
 	width: 100vw;
 	height: 100vh;
@@ -675,7 +673,6 @@ select:focus {
 }
 
 /* main menu */
-
 .room-list-container > .main-menu > .avatar {
 	width: 1.5em;
 	height: 1.5em;
@@ -726,7 +723,6 @@ select:focus {
 }
 
 /* room menu */
-
 .room-list-container > .room-menu > .back {
 	width: 1.4em;
 	height: 1.4em;
@@ -759,7 +755,6 @@ select:focus {
 }
 
 /* room list */
-
 .room-list > .category {
 	padding: 0 0.3em;
 	padding-bottom: 0.3em;
@@ -814,7 +809,7 @@ select:focus {
 	transition: background-position 0.2s, border-left 0.2s;
 }
 
-.room-list > .list > .room:hover  {
+.room-list > .list > .room:hover {
 	border-left: 3px solid var(--accent);
 	background-position: 0;
 }
@@ -836,7 +831,6 @@ select:focus {
 }
 
 /* member list */
-
 .member-list > .member {
 	height: 2em;
 	padding: 0 1em;
@@ -850,7 +844,7 @@ select:focus {
 	transition: background-position 0.2s;
 }
 
-.member-list > .member:hover  {
+.member-list > .member:hover {
 	background-position: 0;
 }
 
@@ -866,6 +860,22 @@ select:focus {
 }
 
 /* message list */
+
+.message-list > .divider {
+	margin: 0.5em 0;
+	position: relative;
+	text-align: center;
+}
+
+.message-list > .divider::before {
+	content: "";
+	width: 100%;
+	height: 1px;
+	display: block;
+	background: rgba(255, 255, 255, 0.2);
+	position: absolute;
+	top: 50%;
+}
 
 .message-list > .message > .author {
 	margin: 0 0.5em;
@@ -911,7 +921,7 @@ select:focus {
 	width: 250px;
 	height: 1.6em;
 	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24">\
-  <rect fill="rgba(0, 0, 0, 0.2)" width="8" height="24"></rect>\
+<rect fill="rgba(0, 0, 0, 0.2)" width="8" height="24"></rect>\
 </svg>') left / contain;
 	display: block;
 	transform: skew(-45deg);
@@ -946,7 +956,6 @@ select:focus {
 }
 
 /* message box */
-
 .command-container {
 	width: 100%;
 	max-height: 35vh;
@@ -1004,7 +1013,6 @@ select:focus {
 }
 
 /* settings */
-
 .message-list.flex {
 	padding: 0;
 	display: flex;
@@ -1077,9 +1085,7 @@ select:focus {
 	width: initial;
 }
 
-.options-container > .input-container > input[type="text"],
-.options-container > .input-container > input[type="password"],
-.options-container > .input-container > textarea {
+.options-container > .input-container > input[type="text"], .options-container > .input-container > input[type="password"], .options-container > .input-container > textarea {
 	width: 12em;
 }
 
@@ -1088,7 +1094,6 @@ select:focus {
 }
 
 /* about page */
-
 .options-container .about-container {
 	height: 100%;
 	display: flex;

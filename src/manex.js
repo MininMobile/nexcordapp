@@ -770,6 +770,8 @@ updateOnlineStatus();
 		}
 
 		{ // get timeline
+			let lastdate = "";
+
 			messageList.classList.remove("flex");
 
 			messageList.innerHTML = "";
@@ -810,7 +812,21 @@ updateOnlineStatus();
 						month = month.toString().length == 1 ? `0${month}` : month;
 						day = day.toString().length == 1 ? `0${day}` : day;
 
-						timestamp.innerText = `${h}:${m} ${month}/${day}/${t.getFullYear()}`;
+						let date = `${month}/${day}/${t.getFullYear()}`;
+
+						if (lastdate != date) {
+							lastdate = date;
+
+							let divider = document.createElement("div");
+								divider.classList.add("divider");
+								messageList.appendChild(divider);
+
+							let text = document.createElement("span");
+								text.innerText = date;
+								divider.appendChild(text);
+						}
+
+						timestamp.innerText = `${h}:${m}`;
 					}
 				}
 
