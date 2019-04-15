@@ -14,7 +14,9 @@ function createWindow() {
 		title: manex.name,
 		backgroundColor: "#212121",
 		frame: false,
-		nodeIntegration: true,
+		webPreferences: {
+			nodeIntegration: true,
+		}
 	});
 
 	win.loadURL(url.format({
