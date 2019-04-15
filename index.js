@@ -13,13 +13,14 @@ function createWindow() {
 		resizable: true,
 		title: manex.name,
 		backgroundColor: "#212121",
-		frame: false
+		frame: false,
+		nodeIntegration: true,
 	});
 
 	win.loadURL(url.format({
 		pathname: path.join(__dirname, "src/index.html"),
 		protocol: "file:",
-		slashes: true
+		slashes: true,
 	}));
 
 	win.focus();

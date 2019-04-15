@@ -648,7 +648,7 @@ select:focus {
 	flex: 1;
 	font-size: 0.9em;
 	overflow-y: auto;
-	-webkit-user-select: initial;
+	-webkit-user-select: text;
 }
 
 .message-list-container > .message-list:empty {
@@ -689,7 +689,7 @@ select:focus {
 .room-list-container > .main-menu > .user-info {
 	flex: 1;
 	font-size: 0.9em;
-	-webkit-user-select: initial;
+	-webkit-user-select: text;
 	overflow: hidden;
 }
 
@@ -886,6 +886,13 @@ select:focus {
 	background: rgba(255, 255, 255, 0.2);
 	position: absolute;
 	top: 50%;
+}
+
+.message-list > .divider span {
+	padding: 0 0.5em;
+	background: #212121;
+	position: relative;
+	z-index: 9;
 }
 
 .message-list > .message > .author {
