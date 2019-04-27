@@ -1,5 +1,5 @@
 # manex
-The matrix client.
+The matrix client. [Documentation](https://mininmobile.github.io/manex)
 
 Come discuss Manex with other Manex-headed individuals at [#manex:matrix.org](https://matrix.to/#/#manex:matrix.org)
 
