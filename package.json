@@ -17,7 +17,7 @@
 	},
 	"homepage": "https://github.com/mininmobile/manex#readme",
 	"dependencies": {
-		"electron": "^4.0.5",
+		"electron": "^7.2.4",
 		"markdown-it": "^8.4.2",
 		"matrix-js-sdk": "^1.0.0",
 		"open": "6.0.0"
