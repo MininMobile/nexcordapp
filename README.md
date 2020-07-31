@@ -1,7 +1,7 @@
 # manex
-The matrix client. [Documentation](https://mininmobile.github.io/manex)
+The matrix client. [docs](https://mininmobile.github.io/manex)
 
-Come discuss Manex with other Manex-headed individuals at [#manex:matrix.org](https://matrix.to/#/#manex:matrix.org)
+Come discuss Manex with other Manex-headed individuals at [#manex:comfi.es](https://matrix.to/#/#manex:comfi.es)
 
 ![manex login](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_login.png)
 ![loading](https://raw.githubusercontent.com/mininmobile/manex/master/docs/src/img/screenshot_loading.png)
